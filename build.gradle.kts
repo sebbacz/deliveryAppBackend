@@ -24,6 +24,10 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.modulith:spring-modulith-api:1.4.1")
+	implementation("org.springframework.modulith:spring-modulith-events-core:1.4.1")
+	implementation("org.springframework.modulith:spring-modulith-starter-core:1.4.1")
+	implementation("org.springframework.modulith:spring-modulith-core:1.4.1")
 }
 
 tasks.withType<Test> {
