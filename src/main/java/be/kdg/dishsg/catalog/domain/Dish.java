@@ -1,10 +1,10 @@
-package be.kdg.dishsg.domain.catalog;
+package be.kdg.dishsg.catalog.domain;
+
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 public class Dish {
-
     private final UUID id;
     private final UUID restaurantId;
     private String name;
@@ -22,9 +22,6 @@ public class Dish {
         this.state = state;
         this.inStock = inStock;
     }
-
-    //gtrstr
-
 
     public UUID getId() {
         return id;

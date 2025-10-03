@@ -28,6 +28,7 @@ dependencies {
 	implementation("org.springframework.modulith:spring-modulith-events-core:1.4.1")
 	implementation("org.springframework.modulith:spring-modulith-starter-core:1.4.1")
 	implementation("org.springframework.modulith:spring-modulith-core:1.4.1")
+	implementation("org.springframework.amqp:spring-rabbit:3.2.7")
 }
 
 tasks.withType<Test> {
