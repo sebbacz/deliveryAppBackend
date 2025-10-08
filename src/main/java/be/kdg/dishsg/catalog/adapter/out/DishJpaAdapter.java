@@ -16,23 +16,24 @@ public class DishJpaAdapter implements DishPersistencePort {
         this.repo = repo;
     }
 
+
     @Override
     public Dish save(Dish dish) {
-        return repo.save(DishJpaEntity.from(dish)).toDomain();
+        return null;
     }
 
     @Override
     public Optional<Dish> findById(UUID dishId) {
-        return repo.findById(dishId).map(DishJpaEntity::toDomain);
+        return Optional.empty();
     }
 
     @Override
     public List<Dish> findByRestaurantId(UUID restaurantId) {
-        return repo.findByRestaurantId(restaurantId).stream().map(DishJpaEntity::toDomain).toList();
+        return null;
     }
 
     @Override
     public long countPublishedAndInStock(UUID restaurantId) {
-        return repo.countPublishedAndInStock(restaurantId);
+        return 0;
     }
 }

@@ -22,5 +22,5 @@ public class DishJpaEntity {
 
     private boolean inStock;
 
-    protected DishJpaEntity() {} // JPA
+     public DishJpaEntity() {}
 }
