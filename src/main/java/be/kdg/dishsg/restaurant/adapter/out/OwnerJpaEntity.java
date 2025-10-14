@@ -12,14 +12,16 @@ public class OwnerJpaEntity {
     @Id
     private UUID id;
     private String email;
-    private String name;
+    private String firstName;
+    private String lastName;
 
     protected OwnerJpaEntity() {}
 
-    public OwnerJpaEntity(UUID id, String email, String name) {
+    public OwnerJpaEntity(UUID id, String email, String firstName, String lastName) {
         this.id = id;
         this.email = email;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public UUID getId() {
@@ -30,7 +32,11 @@ public class OwnerJpaEntity {
         return email;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 }

@@ -5,13 +5,17 @@ import java.util.UUID;
 public class Owner {
     private final UUID id;
     private final String email;
-    private final String name;
+    private final String firstName;
+    private final String lastName;
 
-    public Owner(UUID id, String email, String name) {
+    public Owner(UUID id, String email, String firstName, String lastName) {
         this.id = id;
         this.email = email;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
+
+
 
     public UUID getId() {
         return id;
@@ -21,7 +25,11 @@ public class Owner {
         return email;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 }
