@@ -3,9 +3,12 @@ package be.kdg.dishsg.restaurant.app;
 import be.kdg.dishsg.restaurant.domain.model.Restaurant;
 import be.kdg.dishsg.restaurant.ports.in.CreateRestaurantUseCase;
 import be.kdg.dishsg.restaurant.ports.out.RestaurantRepositoryPort;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+
+@Service
 public class CreateRestaurantService implements CreateRestaurantUseCase {
 
     private final RestaurantRepositoryPort restaurantRepository;
