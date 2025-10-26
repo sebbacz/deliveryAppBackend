@@ -1,73 +1,47 @@
 package be.kdg.dishsg.catalog.domain;
 
-
-import java.math.BigDecimal;
-import java.util.UUID;
-
 public class Dish {
-    private final UUID id;
-    private final UUID restaurantId;
+
+    public enum DishState { DRAFT, LIVE }
+
+    private final String id;
+    private final String restaurantId;
     private String name;
     private String description;
-    private BigDecimal price;
+    private double price;
     private DishState state;
-    private boolean inStock;
 
-    public Dish(UUID id, UUID restaurantId, String name, String description, BigDecimal price, DishState state, boolean inStock) {
+    public Dish(String id, String restaurantId, String name, String description, double price, DishState state) {
+        if (restaurantId == null || restaurantId.isBlank()) throw new IllegalArgumentException("Restaurant ID required");
         this.id = id;
         this.restaurantId = restaurantId;
         this.name = name;
         this.description = description;
         this.price = price;
         this.state = state;
-        this.inStock = inStock;
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public UUID getRestaurantId() {
-        return restaurantId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public void updateDraft(String name, String description, double price) {
+        if (state != DishState.DRAFT) throw new IllegalStateException("Only draft can be updated");
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public DishState getState() {
-        return state;
+    public void publish() {
+        if (state == DishState.LIVE) throw new IllegalStateException("Already published");
+        this.state = DishState.LIVE;
     }
 
-    public void setState(DishState state) {
-        this.state = state;
+    public void unpublish() {
+        if (state == DishState.DRAFT) throw new IllegalStateException("Already draft");
+        this.state = DishState.DRAFT;
     }
 
-    public boolean isInStock() {
-        return inStock;
-    }
-
-    public void setInStock(boolean inStock) {
-        this.inStock = inStock;
-    }
+    public String getId() { return id; }
+    public String getRestaurantId() { return restaurantId; }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+    public double getPrice() { return price; }
+    public DishState getState() { return state; }
 }
