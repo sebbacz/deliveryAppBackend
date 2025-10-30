@@ -51,6 +51,7 @@ services:
       MYSQL_DATABASE: 'keycloak'
       MYSQL_USER: 'keycloak'
       MYSQL_PASSWORD: 'password'
+      MYSQL_TCP_PORT: 3306
     ports:
       - '3307:3306'
     networks:
