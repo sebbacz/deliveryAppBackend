@@ -5,6 +5,7 @@ import be.kdg.dishsg.dish.repository.DishRepositoryPort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -18,8 +19,23 @@ public class JpaDishRepositoryAdapter  implements DishRepositoryPort {
     }
 
     @Override
+    public Optional<Dish> findById(UUID id) {
+        return springRepo.findById(id);
+    }
+
+    @Override
+    public void save(Dish dish) {
+        springRepo.save(dish);
+    }
+
+    @Override
     public List<Dish> findAllDraftsByRestaurant(UUID restaurantId) {
         return springRepo.findByRestaurantIdAndDraftTrue(restaurantId);
+    }
+
+    @Override
+    public long countLiveByRestaurant(UUID restaurantId) {
+        return springRepo.countByRestaurantIdAndDraftFalse(restaurantId);
     }
 
     @Override

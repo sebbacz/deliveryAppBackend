@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface SpringDataDishRepository extends JpaRepository<Dish, UUID> {
 
     List<Dish> findByRestaurantIdAndDraftTrue(UUID restaurantId);
+    long countByRestaurantIdAndDraftFalse(UUID restaurantId);
 }

@@ -1,18 +1,22 @@
 package be.kdg.dishsg.dish.web;
 
 
+import be.kdg.dishsg.dish.app.UpdateDishStockServiceImp;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/dishes")
 public class DishStockController {
 
-    private final UpdateDishStockServiceImpl stockService;
+    private final UpdateDishStockServiceImp stockService;
 
-    public DishStockController(UpdateDishStockServiceImpl stockService) {
+    public DishStockController(UpdateDishStockServiceImp stockService) {
         this.stockService = stockService;
     }
 

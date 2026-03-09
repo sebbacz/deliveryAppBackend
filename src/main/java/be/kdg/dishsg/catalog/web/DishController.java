@@ -8,7 +8,7 @@ import be.kdg.dishsg.catalog.web.dto.DishDraftRequest;
 import be.kdg.dishsg.catalog.web.dto.DishResponse;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController("catalogDishController")
 @RequestMapping("/api/dishes")
 public class DishController {
 
