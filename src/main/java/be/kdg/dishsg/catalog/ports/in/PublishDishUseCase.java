@@ -1,6 +1,7 @@
 package be.kdg.dishsg.catalog.ports.in;
 
-public interface PublishDishUseCase {
+import java.util.UUID;
 
-    void publishDish(String dishId);
+public interface PublishDishUseCase {
+    void publishDish(UUID dishId);
 }

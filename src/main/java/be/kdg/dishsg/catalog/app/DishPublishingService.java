@@ -6,6 +6,7 @@ import be.kdg.dishsg.catalog.ports.in.UnpublishDishUseCase;
 import be.kdg.dishsg.catalog.ports.out.DishRepositoryPort;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 
 @Service
 public class DishPublishingService implements PublishDishUseCase, UnpublishDishUseCase {
@@ -17,15 +18,17 @@ public class DishPublishingService implements PublishDishUseCase, UnpublishDishU
     }
 
     @Override
-    public void publishDish(String id) {
-        Dish dish = repository.findById(id).orElseThrow();
+    public void publishDish(UUID id) {
+        Dish dish = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Dish not found: " + id));
         dish.publish();
         repository.save(dish);
     }
 
     @Override
-    public void unpublishDish(String id) {
-        Dish dish = repository.findById(id).orElseThrow();
+    public void unpublishDish(UUID id) {
+        Dish dish = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Dish not found: " + id));
         dish.unpublish();
         repository.save(dish);
     }

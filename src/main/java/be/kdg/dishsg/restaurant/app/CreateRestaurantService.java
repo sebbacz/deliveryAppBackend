@@ -2,14 +2,15 @@ package be.kdg.dishsg.restaurant.app;
 
 import be.kdg.dishsg.restaurant.domain.model.Restaurant;
 import be.kdg.dishsg.restaurant.ports.in.CreateRestaurantUseCase;
+import be.kdg.dishsg.restaurant.ports.in.GetMyRestaurantUseCase;
 import be.kdg.dishsg.restaurant.ports.out.RestaurantRepositoryPort;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
-
 @Service
-public class CreateRestaurantService implements CreateRestaurantUseCase {
+public class CreateRestaurantService implements CreateRestaurantUseCase, GetMyRestaurantUseCase {
 
     private final RestaurantRepositoryPort restaurantRepository;
 
@@ -19,6 +20,9 @@ public class CreateRestaurantService implements CreateRestaurantUseCase {
 
     @Override
     public Restaurant createRestaurant(Restaurant restaurant) {
+        if (!restaurantRepository.findByOwnerId(restaurant.getOwnerId()).isEmpty()) {
+            throw new IllegalStateException("Owner already has a restaurant");
+        }
         Restaurant toSave = new Restaurant(
                 UUID.randomUUID().toString(),
                 restaurant.getOwnerId(),
@@ -31,5 +35,10 @@ public class CreateRestaurantService implements CreateRestaurantUseCase {
                 restaurant.getOpeningHours()
         );
         return restaurantRepository.save(toSave);
+    }
+
+    @Override
+    public Optional<Restaurant> getRestaurantByOwnerId(String ownerId) {
+        return restaurantRepository.findByOwnerId(ownerId).stream().findFirst();
     }
 }

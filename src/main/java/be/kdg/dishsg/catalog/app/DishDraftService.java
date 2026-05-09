@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class DishDraftService  implements SaveDishDraftUseCase {
+public class DishDraftService implements SaveDishDraftUseCase {
 
     private final DishRepositoryPort repository;
 
@@ -18,14 +18,25 @@ public class DishDraftService  implements SaveDishDraftUseCase {
 
     @Override
     public Dish saveDraft(Dish dish) {
-        Dish draft = new Dish(
-                dish.getId() != null ? dish.getId() : UUID.randomUUID().toString(),
+        if (dish.getId() != null) {
+            Dish existing = repository.findById(dish.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Dish not found: " + dish.getId()));
+            existing.updateDraft(dish.getName(), dish.getType(), dish.getFoodTags(),
+                    dish.getDescription(), dish.getPrice(), dish.getPictureUrl());
+            return repository.save(existing);
+        }
+        Dish newDraft = new Dish(
+                UUID.randomUUID(),
                 dish.getRestaurantId(),
                 dish.getName(),
+                dish.getType(),
+                dish.getFoodTags(),
                 dish.getDescription(),
                 dish.getPrice(),
+                dish.getPictureUrl(),
+                true,
                 Dish.DishState.DRAFT
         );
-        return repository.save(draft);
+        return repository.save(newDraft);
     }
 }
