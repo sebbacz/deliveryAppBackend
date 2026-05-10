@@ -4,6 +4,7 @@ import be.kdg.dishsg.restaurant.domain.model.Address;
 import be.kdg.dishsg.restaurant.domain.model.Restaurant;
 import be.kdg.dishsg.restaurant.ports.in.CreateRestaurantUseCase;
 import be.kdg.dishsg.restaurant.ports.in.GetMyRestaurantUseCase;
+import be.kdg.dishsg.restaurant.ports.in.OpenCloseRestaurantUseCase;
 import be.kdg.dishsg.restaurant.web.dto.CreateRestaurantRequest;
 import be.kdg.dishsg.restaurant.web.dto.RestaurantResponse;
 import be.kdg.dishsg.security.domain.Owner;
@@ -20,11 +21,14 @@ public class RestaurantController {
 
     private final CreateRestaurantUseCase createRestaurantUseCase;
     private final GetMyRestaurantUseCase getMyRestaurantUseCase;
+    private final OpenCloseRestaurantUseCase openCloseRestaurantUseCase;
 
     public RestaurantController(CreateRestaurantUseCase createRestaurantUseCase,
-                                GetMyRestaurantUseCase getMyRestaurantUseCase) {
+                                GetMyRestaurantUseCase getMyRestaurantUseCase,
+                                OpenCloseRestaurantUseCase openCloseRestaurantUseCase) {
         this.createRestaurantUseCase = createRestaurantUseCase;
         this.getMyRestaurantUseCase = getMyRestaurantUseCase;
+        this.openCloseRestaurantUseCase = openCloseRestaurantUseCase;
     }
 
     // US2: Create restaurant (enforces one per owner)
@@ -58,6 +62,22 @@ public class RestaurantController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    // US9: Manually open restaurant
+    @PutMapping("/my/open")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('owner')")
+    public void openRestaurant(Authentication authentication) {
+        openCloseRestaurantUseCase.openRestaurant(extractOwnerId(authentication));
+    }
+
+    // US9: Manually close restaurant
+    @PutMapping("/my/close")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('owner')")
+    public void closeRestaurant(Authentication authentication) {
+        openCloseRestaurantUseCase.closeRestaurant(extractOwnerId(authentication));
+    }
+
     private String extractOwnerId(Authentication authentication) {
         if (authentication.getPrincipal() instanceof Owner owner) {
             return owner.id().toString();
@@ -82,6 +102,7 @@ public class RestaurantController {
         dto.defaultPreparationTime = r.getDefaultPreparationTime();
         dto.typeOfCuisine = r.getTypeOfCuisine();
         dto.openingHours = r.getOpeningHours();
+        dto.isOpen = r.isOpen();
         return dto;
     }
 }

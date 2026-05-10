@@ -11,6 +11,7 @@ public class Restaurant {
     private int defaultPreparationTime;
     private String typeOfCuisine;
     private String openingHours;
+    private boolean isOpen;
 
     public Restaurant(){}
 
@@ -24,6 +25,12 @@ public class Restaurant {
         this.defaultPreparationTime = defaultPreparationTime;
         this.typeOfCuisine = typeOfCuisine;
         this.openingHours = openingHours;
+        this.isOpen = true;
+    }
+
+    public Restaurant(String id, String ownerId, String name, Address address, String contactEmail, String pictureUrl, int defaultPreparationTime, String typeOfCuisine, String openingHours, boolean isOpen) {
+        this(id, ownerId, name, address, contactEmail, pictureUrl, defaultPreparationTime, typeOfCuisine, openingHours);
+        this.isOpen = isOpen;
     }
 
 
@@ -61,5 +68,17 @@ public class Restaurant {
 
     public String getOpeningHours() {
         return openingHours;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void open() {
+        this.isOpen = true;
+    }
+
+    public void close() {
+        this.isOpen = false;
     }
 }

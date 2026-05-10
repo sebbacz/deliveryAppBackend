@@ -1,5 +1,6 @@
 package be.kdg.dishsg.catalog.domain;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ public class Dish {
     private String pictureUrl;
     private boolean inStock;
     private DishState state;
+    private LocalDateTime scheduledAt;
 
     public Dish(UUID id, UUID restaurantId, String name, DishType type, List<String> foodTags,
                 String description, double price, String pictureUrl, boolean inStock, DishState state) {
@@ -31,6 +33,13 @@ public class Dish {
         this.pictureUrl = pictureUrl;
         this.inStock = inStock;
         this.state = state;
+    }
+
+    public Dish(UUID id, UUID restaurantId, String name, DishType type, List<String> foodTags,
+                String description, double price, String pictureUrl, boolean inStock, DishState state,
+                LocalDateTime scheduledAt) {
+        this(id, restaurantId, name, type, foodTags, description, price, pictureUrl, inStock, state);
+        this.scheduledAt = scheduledAt;
     }
 
     public void updateDraft(String name, DishType type, List<String> foodTags,
@@ -54,17 +63,27 @@ public class Dish {
         this.state = DishState.DRAFT;
     }
 
+    public void schedulePublishAt(LocalDateTime at) {
+        if (state != DishState.DRAFT) throw new IllegalStateException("Only draft dishes can be scheduled");
+        this.scheduledAt = at;
+    }
+
+    public void clearSchedule() {
+        this.scheduledAt = null;
+    }
+
     public void markOutOfStock() { this.inStock = false; }
     public void markInStock()    { this.inStock = true; }
 
-    public UUID getId()               { return id; }
-    public UUID getRestaurantId()     { return restaurantId; }
-    public String getName()           { return name; }
-    public DishType getType()         { return type; }
-    public List<String> getFoodTags() { return foodTags; }
-    public String getDescription()    { return description; }
-    public double getPrice()          { return price; }
-    public String getPictureUrl()     { return pictureUrl; }
-    public boolean isInStock()        { return inStock; }
-    public DishState getState()       { return state; }
+    public UUID getId()                   { return id; }
+    public UUID getRestaurantId()         { return restaurantId; }
+    public String getName()               { return name; }
+    public DishType getType()             { return type; }
+    public List<String> getFoodTags()     { return foodTags; }
+    public String getDescription()        { return description; }
+    public double getPrice()              { return price; }
+    public String getPictureUrl()         { return pictureUrl; }
+    public boolean isInStock()            { return inStock; }
+    public DishState getState()           { return state; }
+    public LocalDateTime getScheduledAt() { return scheduledAt; }
 }

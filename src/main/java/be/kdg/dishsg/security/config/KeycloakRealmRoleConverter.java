@@ -12,9 +12,12 @@ import java.util.stream.Collectors;
 
 public class KeycloakRealmRoleConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
     @Override
+    @SuppressWarnings("unchecked")
     public Collection<GrantedAuthority> convert(Jwt jwt) {
         final Map<String, Object> realmAccess = (Map<String, Object>) jwt.getClaims().get("realm_access");
-        return ((List<String>) realmAccess.get("roles"))
-                .stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        if (realmAccess == null) return List.of();
+        final List<String> roles = (List<String>) realmAccess.get("roles");
+        if (roles == null) return List.of();
+        return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 }

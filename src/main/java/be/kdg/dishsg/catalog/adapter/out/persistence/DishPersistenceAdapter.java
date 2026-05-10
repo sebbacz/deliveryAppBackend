@@ -5,6 +5,7 @@ import be.kdg.dishsg.catalog.domain.DishType;
 import be.kdg.dishsg.catalog.ports.out.DishRepositoryPort;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -55,6 +56,12 @@ public class DishPersistenceAdapter implements DishRepositoryPort {
         return dishes;
     }
 
+    @Override
+    public List<Dish> findScheduledDraftsDue(LocalDateTime now) {
+        return springRepo.findByStateAndScheduledAtLessThanEqual(Dish.DishState.DRAFT.name(), now)
+                .stream().map(this::toDomain).collect(Collectors.toList());
+    }
+
     private DishJpaEntity toEntity(Dish dish) {
         return new DishJpaEntity(
                 dish.getId(),
@@ -66,7 +73,8 @@ public class DishPersistenceAdapter implements DishRepositoryPort {
                 dish.getPrice(),
                 dish.getPictureUrl(),
                 dish.isInStock(),
-                dish.getState().name()
+                dish.getState().name(),
+                dish.getScheduledAt()
         );
     }
 
@@ -81,7 +89,8 @@ public class DishPersistenceAdapter implements DishRepositoryPort {
                 entity.getPrice(),
                 entity.getPictureUrl(),
                 entity.isInStock(),
-                Dish.DishState.valueOf(entity.getState())
+                Dish.DishState.valueOf(entity.getState()),
+                entity.getScheduledAt()
         );
     }
 }

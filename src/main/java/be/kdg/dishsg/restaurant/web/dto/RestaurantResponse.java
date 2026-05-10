@@ -13,4 +13,5 @@ public class RestaurantResponse {
     public int defaultPreparationTime;
     public String typeOfCuisine;
     public String openingHours;
+    public boolean isOpen;
 }

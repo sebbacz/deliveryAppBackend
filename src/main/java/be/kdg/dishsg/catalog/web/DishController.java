@@ -5,10 +5,12 @@ import be.kdg.dishsg.catalog.domain.DishType;
 import be.kdg.dishsg.catalog.ports.in.ApplyPendingChangesUseCase;
 import be.kdg.dishsg.catalog.ports.in.PublishDishUseCase;
 import be.kdg.dishsg.catalog.ports.in.SaveDishDraftUseCase;
+import be.kdg.dishsg.catalog.ports.in.ScheduleDishChangesUseCase;
 import be.kdg.dishsg.catalog.ports.in.UnpublishDishUseCase;
 import be.kdg.dishsg.catalog.ports.in.UpdateDishStockUseCase;
 import be.kdg.dishsg.catalog.web.dto.DishDraftRequest;
 import be.kdg.dishsg.catalog.web.dto.DishResponse;
+import be.kdg.dishsg.catalog.web.dto.ScheduleChangesRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,17 +26,20 @@ public class DishController {
     private final UnpublishDishUseCase unpublishDishUseCase;
     private final UpdateDishStockUseCase updateDishStockUseCase;
     private final ApplyPendingChangesUseCase applyPendingChangesUseCase;
+    private final ScheduleDishChangesUseCase scheduleDishChangesUseCase;
 
     public DishController(SaveDishDraftUseCase saveDishDraftUseCase,
                           PublishDishUseCase publishDishUseCase,
                           UnpublishDishUseCase unpublishDishUseCase,
                           UpdateDishStockUseCase updateDishStockUseCase,
-                          ApplyPendingChangesUseCase applyPendingChangesUseCase) {
+                          ApplyPendingChangesUseCase applyPendingChangesUseCase,
+                          ScheduleDishChangesUseCase scheduleDishChangesUseCase) {
         this.saveDishDraftUseCase = saveDishDraftUseCase;
         this.publishDishUseCase = publishDishUseCase;
         this.unpublishDishUseCase = unpublishDishUseCase;
         this.updateDishStockUseCase = updateDishStockUseCase;
         this.applyPendingChangesUseCase = applyPendingChangesUseCase;
+        this.scheduleDishChangesUseCase = scheduleDishChangesUseCase;
     }
 
     // US3: Edit dish as draft
@@ -96,6 +101,14 @@ public class DishController {
         applyPendingChangesUseCase.applyPendingChanges(restaurantId);
     }
 
+    // US7: Schedule pending changes to go live at a chosen time
+    @PostMapping("/schedule")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('owner')")
+    public void scheduleChanges(@RequestBody ScheduleChangesRequest request) {
+        scheduleDishChangesUseCase.scheduleChanges(request.restaurantId, request.scheduledAt);
+    }
+
     private DishResponse toResponse(Dish dish) {
         DishResponse dto = new DishResponse();
         dto.id = dish.getId();
@@ -108,6 +121,7 @@ public class DishController {
         dto.pictureUrl = dish.getPictureUrl();
         dto.inStock = dish.isInStock();
         dto.state = dish.getState().name();
+        dto.scheduledAt = dish.getScheduledAt();
         return dto;
     }
 }

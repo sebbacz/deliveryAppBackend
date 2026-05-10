@@ -1,5 +1,6 @@
 package be.kdg.dishsg.catalog.web.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,4 +15,5 @@ public class DishResponse {
     public String pictureUrl;
     public boolean inStock;
     public String state;
+    public LocalDateTime scheduledAt;
 }
