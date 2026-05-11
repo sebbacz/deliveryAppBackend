@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface SpringDataOrderRepository extends JpaRepository<OrderJpaEntity, UUID> {
     List<OrderJpaEntity> findByRestaurantId(UUID restaurantId);
+    List<OrderJpaEntity> findByStatusAndCreatedAtBefore(String status, java.time.LocalDateTime cutoff);
 }

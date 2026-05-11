@@ -6,6 +6,7 @@ import be.kdg.dishsg.order.domain.OrderStatus;
 import be.kdg.dishsg.order.ports.out.OrderRepositoryPort;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,6 +35,13 @@ public class OrderPersistenceAdapter implements OrderRepositoryPort {
     @Override
     public List<Order> findByRestaurantId(UUID restaurantId) {
         return springRepo.findByRestaurantId(restaurantId).stream()
+                .map(this::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Order> findPendingOrdersBefore(LocalDateTime cutoff) {
+        return springRepo.findByStatusAndCreatedAtBefore("PENDING_DECISION", cutoff).stream()
                 .map(this::toDomain)
                 .collect(Collectors.toList());
     }

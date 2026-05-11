@@ -58,6 +58,13 @@ public class Order {
         this.rejectionReason = reason;
     }
 
+    public void markReady() {
+        if (status != OrderStatus.ACCEPTED) {
+            throw new IllegalStateException("Only accepted orders can be marked ready for pickup");
+        }
+        this.status = OrderStatus.READY_FOR_PICKUP;
+    }
+
     public UUID getId()                  { return id; }
     public UUID getRestaurantId()        { return restaurantId; }
     public String getCustomerName()      { return customerName; }

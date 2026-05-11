@@ -74,6 +74,30 @@ public class RestaurantRepositoryAdapter  implements RestaurantRepositoryPort {
     }
 
     @Override
+    public List<Restaurant> findAll() {
+        return repository.findAll().stream()
+                .map(entity -> new Restaurant(
+                        entity.getId(),
+                        entity.getOwnerId(),
+                        entity.getName(),
+                        new Address(
+                                entity.getAddress().getStreet(),
+                                entity.getAddress().getNumber(),
+                                entity.getAddress().getPostalCode(),
+                                entity.getAddress().getCity(),
+                                entity.getAddress().getCountry()
+                        ),
+                        entity.getContactEmail(),
+                        entity.getPictureUrl(),
+                        entity.getDefaultPreparationTime(),
+                        entity.getTypeOfCuisine(),
+                        entity.getOpeningHours(),
+                        entity.isOpen()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<Restaurant> findByOwnerId(String ownerId) {
         return repository.findByOwnerId(ownerId).stream()
                 .map(entity -> new Restaurant(

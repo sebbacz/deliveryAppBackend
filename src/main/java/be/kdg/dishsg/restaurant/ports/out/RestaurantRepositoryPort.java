@@ -9,5 +9,5 @@ public  interface RestaurantRepositoryPort {
     Restaurant save(Restaurant restaurant);
     Optional<Restaurant> findById(String id);
     List<Restaurant> findByOwnerId(String ownerId);
-
+    List<Restaurant> findAll();
 }

@@ -6,6 +6,7 @@ import be.kdg.dishsg.order.domain.OrderStatus;
 import be.kdg.dishsg.order.ports.in.AcceptOrderUseCase;
 import be.kdg.dishsg.order.ports.in.CreateOrderUseCase;
 import be.kdg.dishsg.order.ports.in.GetOrdersUseCase;
+import be.kdg.dishsg.order.ports.in.MarkOrderReadyUseCase;
 import be.kdg.dishsg.order.ports.in.RejectOrderUseCase;
 import be.kdg.dishsg.order.web.dto.*;
 import org.springframework.http.HttpStatus;
@@ -24,15 +25,18 @@ public class OrderController {
     private final AcceptOrderUseCase acceptOrderUseCase;
     private final RejectOrderUseCase rejectOrderUseCase;
     private final GetOrdersUseCase getOrdersUseCase;
+    private final MarkOrderReadyUseCase markOrderReadyUseCase;
 
     public OrderController(CreateOrderUseCase createOrderUseCase,
                            AcceptOrderUseCase acceptOrderUseCase,
                            RejectOrderUseCase rejectOrderUseCase,
-                           GetOrdersUseCase getOrdersUseCase) {
+                           GetOrdersUseCase getOrdersUseCase,
+                           MarkOrderReadyUseCase markOrderReadyUseCase) {
         this.createOrderUseCase = createOrderUseCase;
         this.acceptOrderUseCase = acceptOrderUseCase;
         this.rejectOrderUseCase = rejectOrderUseCase;
         this.getOrdersUseCase = getOrdersUseCase;
+        this.markOrderReadyUseCase = markOrderReadyUseCase;
     }
 
     // Create order (customer flow, no auth required)
@@ -71,6 +75,14 @@ public class OrderController {
     @PreAuthorize("hasAuthority('owner')")
     public void rejectOrder(@PathVariable UUID id, @RequestBody RejectOrderRequest request) {
         rejectOrderUseCase.rejectOrder(id, request.reason);
+    }
+
+    // US12: Mark accepted order as ready for pickup
+    @PostMapping("/{id}/ready")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('owner')")
+    public void markOrderReady(@PathVariable UUID id) {
+        markOrderReadyUseCase.markOrderReady(id);
     }
 
     private OrderResponse toResponse(Order order) {

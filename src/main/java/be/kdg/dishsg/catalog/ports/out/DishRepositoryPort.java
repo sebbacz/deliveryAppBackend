@@ -12,6 +12,7 @@ public interface DishRepositoryPort {
     Optional<Dish> findById(UUID id);
     List<Dish> findAllByRestaurantId(UUID restaurantId);
     List<Dish> findAllDraftsByRestaurantId(UUID restaurantId);
+    List<Dish> findLiveByRestaurantId(UUID restaurantId);
     long countLiveByRestaurantId(UUID restaurantId);
     List<Dish> saveAll(List<Dish> dishes);
     List<Dish> findScheduledDraftsDue(LocalDateTime now);

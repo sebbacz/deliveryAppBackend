@@ -46,6 +46,13 @@ public class DishPersistenceAdapter implements DishRepositoryPort {
     }
 
     @Override
+    public List<Dish> findLiveByRestaurantId(UUID restaurantId) {
+        return springRepo.findByRestaurantIdAndState(restaurantId, Dish.DishState.LIVE.name()).stream()
+                .map(this::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public long countLiveByRestaurantId(UUID restaurantId) {
         return springRepo.countByRestaurantIdAndState(restaurantId, Dish.DishState.LIVE.name());
     }
