@@ -46,6 +46,11 @@ public class OrderPersistenceAdapter implements OrderRepositoryPort {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public int countActiveByRestaurantId(UUID restaurantId) {
+        return springRepo.countByRestaurantIdAndStatusIn(restaurantId, List.of("PENDING_DECISION", "ACCEPTED"));
+    }
+
     private OrderJpaEntity toEntity(Order order) {
         List<OrderItemJpaEntity> items = order.getItems().stream()
                 .map(item -> new OrderItemJpaEntity(

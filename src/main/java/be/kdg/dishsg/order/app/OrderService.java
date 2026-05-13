@@ -4,6 +4,8 @@ import be.kdg.dishsg.order.domain.Order;
 import be.kdg.dishsg.order.domain.OrderStatus;
 import be.kdg.dishsg.order.ports.in.AcceptOrderUseCase;
 import be.kdg.dishsg.order.ports.in.CreateOrderUseCase;
+import be.kdg.dishsg.order.ports.in.GetBusynessUseCase;
+import be.kdg.dishsg.order.ports.in.GetOrderByIdUseCase;
 import be.kdg.dishsg.order.ports.in.GetOrdersUseCase;
 import be.kdg.dishsg.order.ports.in.MarkOrderReadyUseCase;
 import be.kdg.dishsg.order.ports.in.RejectOrderUseCase;
@@ -20,7 +22,8 @@ import java.util.UUID;
 
 @Service
 public class OrderService implements AcceptOrderUseCase, RejectOrderUseCase,
-        GetOrdersUseCase, CreateOrderUseCase, MarkOrderReadyUseCase {
+        GetOrdersUseCase, CreateOrderUseCase, MarkOrderReadyUseCase,
+        GetBusynessUseCase, GetOrderByIdUseCase {
 
     private final OrderRepositoryPort repository;
     private final RabbitTemplate rabbitTemplate;
@@ -69,6 +72,17 @@ public class OrderService implements AcceptOrderUseCase, RejectOrderUseCase,
     @Override
     public List<Order> getOrdersForRestaurant(UUID restaurantId) {
         return repository.findByRestaurantId(restaurantId);
+    }
+
+    @Override
+    public int getActiveOrderCount(UUID restaurantId) {
+        return repository.countActiveByRestaurantId(restaurantId);
+    }
+
+    @Override
+    public Order getOrderById(UUID id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
     }
 
     @Override

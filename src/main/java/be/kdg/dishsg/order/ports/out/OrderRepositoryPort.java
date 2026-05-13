@@ -12,4 +12,5 @@ public interface OrderRepositoryPort {
     Optional<Order> findById(UUID id);
     List<Order> findByRestaurantId(UUID restaurantId);
     List<Order> findPendingOrdersBefore(LocalDateTime cutoff);
+    int countActiveByRestaurantId(UUID restaurantId);
 }
