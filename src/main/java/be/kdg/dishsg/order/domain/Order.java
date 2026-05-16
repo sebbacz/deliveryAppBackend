@@ -19,6 +19,8 @@ public class Order {
     private final LocalDateTime createdAt;
     private OrderStatus status;
     private String rejectionReason;
+    private Double courierLatitude;
+    private Double courierLongitude;
 
     public Order(UUID id, UUID restaurantId, String customerName,
                  String deliveryStreet, String deliveryNumber, String deliveryPostalCode,
@@ -38,6 +40,17 @@ public class Order {
         this.createdAt = createdAt;
         this.status = status;
         this.rejectionReason = rejectionReason;
+    }
+
+    public Order(UUID id, UUID restaurantId, String customerName,
+                 String deliveryStreet, String deliveryNumber, String deliveryPostalCode,
+                 String deliveryCity, String deliveryCountry, String contactEmail,
+                 List<OrderItem> items, LocalDateTime createdAt, OrderStatus status,
+                 String rejectionReason, Double courierLatitude, Double courierLongitude) {
+        this(id, restaurantId, customerName, deliveryStreet, deliveryNumber, deliveryPostalCode,
+                deliveryCity, deliveryCountry, contactEmail, items, createdAt, status, rejectionReason);
+        this.courierLatitude = courierLatitude;
+        this.courierLongitude = courierLongitude;
     }
 
     public void accept() {
@@ -65,6 +78,25 @@ public class Order {
         this.status = OrderStatus.READY_FOR_PICKUP;
     }
 
+    public void markPickedUp() {
+        if (status != OrderStatus.READY_FOR_PICKUP) {
+            throw new IllegalStateException("Only orders ready for pickup can be marked as picked up");
+        }
+        this.status = OrderStatus.PICKED_UP;
+    }
+
+    public void markDelivered() {
+        if (status != OrderStatus.PICKED_UP) {
+            throw new IllegalStateException("Only picked up orders can be marked as delivered");
+        }
+        this.status = OrderStatus.DELIVERED;
+    }
+
+    public void updateCourierLocation(double latitude, double longitude) {
+        this.courierLatitude = latitude;
+        this.courierLongitude = longitude;
+    }
+
     public UUID getId()                  { return id; }
     public UUID getRestaurantId()        { return restaurantId; }
     public String getCustomerName()      { return customerName; }
@@ -78,4 +110,6 @@ public class Order {
     public LocalDateTime getCreatedAt()  { return createdAt; }
     public OrderStatus getStatus()       { return status; }
     public String getRejectionReason()   { return rejectionReason; }
+    public Double getCourierLatitude()   { return courierLatitude; }
+    public Double getCourierLongitude()  { return courierLongitude; }
 }

@@ -99,6 +99,8 @@ public class OrderController {
         dto.status = order.getStatus().name();
         dto.rejectionReason = order.getRejectionReason();
         dto.createdAt = order.getCreatedAt();
+        dto.courierLatitude = order.getCourierLatitude();
+        dto.courierLongitude = order.getCourierLongitude();
         dto.items = order.getItems().stream().map(i -> {
             OrderItemResponse ir = new OrderItemResponse();
             ir.id = i.getId();

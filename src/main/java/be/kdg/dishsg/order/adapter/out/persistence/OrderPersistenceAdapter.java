@@ -75,6 +75,8 @@ public class OrderPersistenceAdapter implements OrderRepositoryPort {
                 order.getStatus().name(),
                 order.getRejectionReason(),
                 order.getCreatedAt(),
+                order.getCourierLatitude(),
+                order.getCourierLongitude(),
                 items
         );
     }
@@ -96,7 +98,9 @@ public class OrderPersistenceAdapter implements OrderRepositoryPort {
                 items,
                 entity.getCreatedAt(),
                 OrderStatus.valueOf(entity.getStatus()),
-                entity.getRejectionReason()
+                entity.getRejectionReason(),
+                entity.getCourierLatitude(),
+                entity.getCourierLongitude()
         );
     }
 }

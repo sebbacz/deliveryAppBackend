@@ -33,6 +33,9 @@ public class OrderJpaEntity {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    private Double courierLatitude;
+    private Double courierLongitude;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "order_id")
     private List<OrderItemJpaEntity> items;
@@ -43,6 +46,7 @@ public class OrderJpaEntity {
                           String deliveryStreet, String deliveryNumber, String deliveryPostalCode,
                           String deliveryCity, String deliveryCountry, String contactEmail,
                           String status, String rejectionReason, LocalDateTime createdAt,
+                          Double courierLatitude, Double courierLongitude,
                           List<OrderItemJpaEntity> items) {
         this.id = id;
         this.restaurantId = restaurantId;
@@ -56,6 +60,8 @@ public class OrderJpaEntity {
         this.status = status;
         this.rejectionReason = rejectionReason;
         this.createdAt = createdAt;
+        this.courierLatitude = courierLatitude;
+        this.courierLongitude = courierLongitude;
         this.items = items;
     }
 
@@ -71,5 +77,7 @@ public class OrderJpaEntity {
     public String getStatus()             { return status; }
     public String getRejectionReason()    { return rejectionReason; }
     public LocalDateTime getCreatedAt()   { return createdAt; }
+    public Double getCourierLatitude()    { return courierLatitude; }
+    public Double getCourierLongitude()   { return courierLongitude; }
     public List<OrderItemJpaEntity> getItems() { return items; }
 }

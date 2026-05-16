@@ -4,5 +4,7 @@ public enum OrderStatus {
     PENDING_DECISION,
     ACCEPTED,
     REJECTED,
-    READY_FOR_PICKUP
+    READY_FOR_PICKUP,
+    PICKED_UP,
+    DELIVERED
 }

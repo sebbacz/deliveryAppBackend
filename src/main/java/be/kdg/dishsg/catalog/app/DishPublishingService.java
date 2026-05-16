@@ -21,6 +21,10 @@ public class DishPublishingService implements PublishDishUseCase, UnpublishDishU
     public void publishDish(UUID id) {
         Dish dish = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Dish not found: " + id));
+        long liveCount = repository.countLiveByRestaurantId(dish.getRestaurantId());
+        if (liveCount >= 10) {
+            throw new IllegalStateException("A restaurant cannot have more than 10 live dishes at a time");
+        }
         dish.publish();
         repository.save(dish);
     }

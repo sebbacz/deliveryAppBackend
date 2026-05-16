@@ -7,8 +7,11 @@ import be.kdg.dishsg.order.ports.in.CreateOrderUseCase;
 import be.kdg.dishsg.order.ports.in.GetBusynessUseCase;
 import be.kdg.dishsg.order.ports.in.GetOrderByIdUseCase;
 import be.kdg.dishsg.order.ports.in.GetOrdersUseCase;
+import be.kdg.dishsg.order.ports.in.MarkOrderDeliveredUseCase;
+import be.kdg.dishsg.order.ports.in.MarkOrderPickedUpUseCase;
 import be.kdg.dishsg.order.ports.in.MarkOrderReadyUseCase;
 import be.kdg.dishsg.order.ports.in.RejectOrderUseCase;
+import be.kdg.dishsg.order.ports.in.UpdateCourierLocationUseCase;
 import be.kdg.dishsg.order.ports.out.OrderRepositoryPort;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
@@ -23,7 +26,8 @@ import java.util.UUID;
 @Service
 public class OrderService implements AcceptOrderUseCase, RejectOrderUseCase,
         GetOrdersUseCase, CreateOrderUseCase, MarkOrderReadyUseCase,
-        GetBusynessUseCase, GetOrderByIdUseCase {
+        GetBusynessUseCase, GetOrderByIdUseCase, MarkOrderPickedUpUseCase,
+        MarkOrderDeliveredUseCase, UpdateCourierLocationUseCase {
 
     private final OrderRepositoryPort repository;
     private final RabbitTemplate rabbitTemplate;
@@ -59,6 +63,9 @@ public class OrderService implements AcceptOrderUseCase, RejectOrderUseCase,
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
         order.accept();
         repository.save(order);
+        String routingKey = "restaurant." + order.getRestaurantId() + ".order.accepted.v1";
+        rabbitTemplate.convertAndSend("kdg.events", routingKey,
+                Map.of("orderId", order.getId(), "restaurantId", order.getRestaurantId()));
     }
 
     @Override
@@ -94,5 +101,29 @@ public class OrderService implements AcceptOrderUseCase, RejectOrderUseCase,
         String routingKey = "restaurant." + order.getRestaurantId() + ".order.ready.v1";
         rabbitTemplate.convertAndSend("kdg.events", routingKey,
                 Map.of("orderId", order.getId(), "restaurantId", order.getRestaurantId()));
+    }
+
+    @Override
+    public void markOrderPickedUp(UUID orderId) {
+        Order order = repository.findById(orderId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
+        order.markPickedUp();
+        repository.save(order);
+    }
+
+    @Override
+    public void markOrderDelivered(UUID orderId) {
+        Order order = repository.findById(orderId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
+        order.markDelivered();
+        repository.save(order);
+    }
+
+    @Override
+    public void updateCourierLocation(UUID orderId, double latitude, double longitude) {
+        Order order = repository.findById(orderId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
+        order.updateCourierLocation(latitude, longitude);
+        repository.save(order);
     }
 }

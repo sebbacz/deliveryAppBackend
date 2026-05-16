@@ -18,4 +18,6 @@ public class OrderResponse {
     public String rejectionReason;
     public LocalDateTime createdAt;
     public List<OrderItemResponse> items;
+    public Double courierLatitude;
+    public Double courierLongitude;
 }
