@@ -49,7 +49,11 @@ public class RestaurantController {
                 request.typeOfCuisine,
                 request.openingHours
         );
-        return toResponse(createRestaurantUseCase.createRestaurant(restaurant));
+        try {
+            return toResponse(createRestaurantUseCase.createRestaurant(restaurant));
+        } catch (IllegalStateException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
     }
 
     // US2: Check if owner already has a restaurant

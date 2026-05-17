@@ -4,6 +4,7 @@ import be.kdg.dishsg.catalog.ports.out.DishRepositoryPort;
 import be.kdg.dishsg.pricerange.domain.PriceRangeCriteriaEvent;
 import be.kdg.dishsg.pricerange.domain.PriceRangePoint;
 import be.kdg.dishsg.pricerange.ports.in.AddCriteriaEventUseCase;
+import be.kdg.dishsg.pricerange.ports.in.GetCriteriaEventsUseCase;
 import be.kdg.dishsg.pricerange.ports.in.GetPriceRangeHistoryUseCase;
 import be.kdg.dishsg.pricerange.ports.out.PriceRangeCriteriaEventRepositoryPort;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.OptionalDouble;
 import java.util.UUID;
 
 @Service
-public class PriceRangeService implements AddCriteriaEventUseCase, GetPriceRangeHistoryUseCase {
+public class PriceRangeService implements AddCriteriaEventUseCase, GetCriteriaEventsUseCase, GetPriceRangeHistoryUseCase {
 
     private static final DateTimeFormatter MONTH_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM");
 
@@ -28,6 +29,11 @@ public class PriceRangeService implements AddCriteriaEventUseCase, GetPriceRange
                               DishRepositoryPort dishRepo) {
         this.criteriaRepo = criteriaRepo;
         this.dishRepo = dishRepo;
+    }
+
+    @Override
+    public List<PriceRangeCriteriaEvent> getCriteriaEvents() {
+        return criteriaRepo.findAllOrderedByEffectiveAt();
     }
 
     @Override

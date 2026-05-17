@@ -13,6 +13,7 @@ import be.kdg.dishsg.order.ports.in.MarkOrderReadyUseCase;
 import be.kdg.dishsg.order.ports.in.RejectOrderUseCase;
 import be.kdg.dishsg.order.ports.in.UpdateCourierLocationUseCase;
 import be.kdg.dishsg.order.ports.out.OrderRepositoryPort;
+import be.kdg.dishsg.order.ports.out.RestaurantStatusPort;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,14 +32,20 @@ public class OrderService implements AcceptOrderUseCase, RejectOrderUseCase,
 
     private final OrderRepositoryPort repository;
     private final RabbitTemplate rabbitTemplate;
+    private final RestaurantStatusPort restaurantStatusPort;
 
-    public OrderService(OrderRepositoryPort repository, RabbitTemplate rabbitTemplate) {
+    public OrderService(OrderRepositoryPort repository, RabbitTemplate rabbitTemplate,
+                        RestaurantStatusPort restaurantStatusPort) {
         this.repository = repository;
         this.rabbitTemplate = rabbitTemplate;
+        this.restaurantStatusPort = restaurantStatusPort;
     }
 
     @Override
     public Order createOrder(Order order) {
+        if (!restaurantStatusPort.isRestaurantOpen(order.getRestaurantId())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Restaurant is currently closed");
+        }
         Order toSave = new Order(
                 UUID.randomUUID(),
                 order.getRestaurantId(),

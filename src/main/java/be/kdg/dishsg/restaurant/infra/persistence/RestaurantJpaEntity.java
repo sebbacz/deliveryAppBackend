@@ -1,6 +1,7 @@
 package be.kdg.dishsg.restaurant.infra.persistence;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,6 +13,7 @@ public class RestaurantJpaEntity {
 
     @Id
     private String id;
+    @Column(unique = true)
     private String ownerId;
     private String name;
     private String contactEmail;

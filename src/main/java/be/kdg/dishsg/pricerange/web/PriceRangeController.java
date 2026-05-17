@@ -2,8 +2,10 @@ package be.kdg.dishsg.pricerange.web;
 
 import be.kdg.dishsg.pricerange.domain.PriceRangePoint;
 import be.kdg.dishsg.pricerange.ports.in.AddCriteriaEventUseCase;
+import be.kdg.dishsg.pricerange.ports.in.GetCriteriaEventsUseCase;
 import be.kdg.dishsg.pricerange.ports.in.GetPriceRangeHistoryUseCase;
 import be.kdg.dishsg.pricerange.web.dto.AddCriteriaEventRequest;
+import be.kdg.dishsg.pricerange.web.dto.CriteriaEventResponse;
 import be.kdg.dishsg.pricerange.web.dto.PriceRangePointResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,11 +19,14 @@ import java.util.stream.Collectors;
 public class PriceRangeController {
 
     private final AddCriteriaEventUseCase addCriteriaEventUseCase;
+    private final GetCriteriaEventsUseCase getCriteriaEventsUseCase;
     private final GetPriceRangeHistoryUseCase getPriceRangeHistoryUseCase;
 
     public PriceRangeController(AddCriteriaEventUseCase addCriteriaEventUseCase,
+                                 GetCriteriaEventsUseCase getCriteriaEventsUseCase,
                                  GetPriceRangeHistoryUseCase getPriceRangeHistoryUseCase) {
         this.addCriteriaEventUseCase = addCriteriaEventUseCase;
+        this.getCriteriaEventsUseCase = getCriteriaEventsUseCase;
         this.getPriceRangeHistoryUseCase = getPriceRangeHistoryUseCase;
     }
 
@@ -33,7 +38,16 @@ public class PriceRangeController {
                 .collect(Collectors.toList());
     }
 
-    // Admin: Add a new price range criteria event (owner-secured as proxy for admin)
+    // US32: Get all price range criteria events (owner-secured as proxy for admin)
+    @GetMapping("/api/price-range/criteria")
+    @PreAuthorize("hasAuthority('owner')")
+    public List<CriteriaEventResponse> getCriteriaEvents() {
+        return getCriteriaEventsUseCase.getCriteriaEvents().stream()
+                .map(e -> new CriteriaEventResponse(e.getId(), e.getEffectiveAt(), e.getCheapMax(), e.getRegularMax(), e.getExpensiveMax()))
+                .collect(Collectors.toList());
+    }
+
+    // US32: Add a new price range criteria event (owner-secured as proxy for admin)
     @PostMapping("/api/price-range/criteria")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('owner')")
