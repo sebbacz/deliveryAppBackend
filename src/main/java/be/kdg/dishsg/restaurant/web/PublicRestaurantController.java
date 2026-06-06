@@ -56,6 +56,8 @@ public class PublicRestaurantController {
         dto.typeOfCuisine = r.getTypeOfCuisine();
         dto.openingHours = r.getOpeningHours();
         dto.isOpen = r.isOpen();
+        dto.latitude = r.getLatitude();
+        dto.longitude = r.getLongitude();
         return dto;
     }
 }

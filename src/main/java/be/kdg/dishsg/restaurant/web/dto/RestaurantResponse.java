@@ -14,4 +14,6 @@ public class RestaurantResponse {
     public String typeOfCuisine;
     public String openingHours;
     public boolean isOpen;
+    public Double latitude;
+    public Double longitude;
 }

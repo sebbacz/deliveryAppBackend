@@ -43,7 +43,9 @@ public class RestaurantRepositoryAdapter  implements RestaurantRepositoryPort {
                 restaurant.getDefaultPreparationTime(),
                 restaurant.getTypeOfCuisine(),
                 restaurant.getOpeningHours(),
-                restaurant.isOpen()
+                restaurant.isOpen(),
+                restaurant.getLatitude(),
+                restaurant.getLongitude()
         );
 
         repository.save(entity);
@@ -69,7 +71,9 @@ public class RestaurantRepositoryAdapter  implements RestaurantRepositoryPort {
                         entity.getDefaultPreparationTime(),
                         entity.getTypeOfCuisine(),
                         entity.getOpeningHours(),
-                        entity.isOpen()
+                        entity.isOpen(),
+                        entity.getLatitude(),
+                        entity.getLongitude()
                 ));
     }
 
@@ -92,7 +96,9 @@ public class RestaurantRepositoryAdapter  implements RestaurantRepositoryPort {
                         entity.getDefaultPreparationTime(),
                         entity.getTypeOfCuisine(),
                         entity.getOpeningHours(),
-                        entity.isOpen()
+                        entity.isOpen(),
+                        entity.getLatitude(),
+                        entity.getLongitude()
                 ))
                 .collect(Collectors.toList());
     }
@@ -116,7 +122,9 @@ public class RestaurantRepositoryAdapter  implements RestaurantRepositoryPort {
                         entity.getDefaultPreparationTime(),
                         entity.getTypeOfCuisine(),
                         entity.getOpeningHours(),
-                        entity.isOpen()
+                        entity.isOpen(),
+                        entity.getLatitude(),
+                        entity.getLongitude()
                 ))
                 .collect(Collectors.toList());
     }

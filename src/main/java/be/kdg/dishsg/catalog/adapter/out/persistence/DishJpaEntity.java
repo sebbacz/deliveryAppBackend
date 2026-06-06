@@ -21,7 +21,7 @@ public class DishJpaEntity {
 
     private String type;
 
-    @ElementCollection
+    @ElementCollection(fetch = jakarta.persistence.FetchType.EAGER)
     @CollectionTable(name = "dish_food_tags", joinColumns = @JoinColumn(name = "dish_id"))
     @Column(name = "tag")
     private List<String> foodTags;

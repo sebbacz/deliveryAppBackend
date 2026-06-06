@@ -36,7 +36,7 @@ public class OrderJpaEntity {
     private Double courierLatitude;
     private Double courierLongitude;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private List<OrderItemJpaEntity> items;
 

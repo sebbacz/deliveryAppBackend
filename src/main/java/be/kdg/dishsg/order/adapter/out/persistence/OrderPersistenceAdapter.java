@@ -5,6 +5,7 @@ import be.kdg.dishsg.order.domain.OrderItem;
 import be.kdg.dishsg.order.domain.OrderStatus;
 import be.kdg.dishsg.order.ports.out.OrderRepositoryPort;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Repository
+@Transactional
 public class OrderPersistenceAdapter implements OrderRepositoryPort {
 
     private final SpringDataOrderRepository springRepo;

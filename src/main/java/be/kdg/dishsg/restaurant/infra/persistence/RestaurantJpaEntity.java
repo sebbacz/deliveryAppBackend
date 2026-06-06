@@ -22,6 +22,8 @@ public class RestaurantJpaEntity {
     private String typeOfCuisine;
     private String openingHours;
     private boolean isOpen = true;
+    private Double latitude;
+    private Double longitude;
 
     @Embedded
     private AddressEmbeddable address;
@@ -30,7 +32,8 @@ public class RestaurantJpaEntity {
 
     public RestaurantJpaEntity(String id, String ownerId, String name, AddressEmbeddable address,
                                String contactEmail, String pictureUrl, int defaultPreparationTime,
-                               String typeOfCuisine, String openingHours, boolean isOpen) {
+                               String typeOfCuisine, String openingHours, boolean isOpen,
+                               Double latitude, Double longitude) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
@@ -41,6 +44,8 @@ public class RestaurantJpaEntity {
         this.typeOfCuisine = typeOfCuisine;
         this.openingHours = openingHours;
         this.isOpen = isOpen;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getId() {
@@ -81,5 +86,13 @@ public class RestaurantJpaEntity {
 
     public boolean isOpen() {
         return isOpen;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
     }
 }

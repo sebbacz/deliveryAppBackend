@@ -12,6 +12,8 @@ public class Restaurant {
     private String typeOfCuisine;
     private String openingHours;
     private boolean isOpen;
+    private Double latitude;
+    private Double longitude;
 
     public Restaurant(){}
 
@@ -31,6 +33,12 @@ public class Restaurant {
     public Restaurant(String id, String ownerId, String name, Address address, String contactEmail, String pictureUrl, int defaultPreparationTime, String typeOfCuisine, String openingHours, boolean isOpen) {
         this(id, ownerId, name, address, contactEmail, pictureUrl, defaultPreparationTime, typeOfCuisine, openingHours);
         this.isOpen = isOpen;
+    }
+
+    public Restaurant(String id, String ownerId, String name, Address address, String contactEmail, String pictureUrl, int defaultPreparationTime, String typeOfCuisine, String openingHours, boolean isOpen, Double latitude, Double longitude) {
+        this(id, ownerId, name, address, contactEmail, pictureUrl, defaultPreparationTime, typeOfCuisine, openingHours, isOpen);
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
 
@@ -80,5 +88,21 @@ public class Restaurant {
 
     public void close() {
         this.isOpen = false;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }

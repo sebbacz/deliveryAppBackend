@@ -3,6 +3,7 @@ package be.kdg.dishsg.catalog.web;
 import be.kdg.dishsg.catalog.domain.Dish;
 import be.kdg.dishsg.catalog.domain.DishType;
 import be.kdg.dishsg.catalog.ports.in.ApplyPendingChangesUseCase;
+import be.kdg.dishsg.catalog.ports.in.GetOwnerDishesUseCase;
 import be.kdg.dishsg.catalog.ports.in.PublishDishUseCase;
 import be.kdg.dishsg.catalog.ports.in.SaveDishDraftUseCase;
 import be.kdg.dishsg.catalog.ports.in.ScheduleDishChangesUseCase;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -27,19 +29,31 @@ public class DishController {
     private final UpdateDishStockUseCase updateDishStockUseCase;
     private final ApplyPendingChangesUseCase applyPendingChangesUseCase;
     private final ScheduleDishChangesUseCase scheduleDishChangesUseCase;
+    private final GetOwnerDishesUseCase getOwnerDishesUseCase;
 
     public DishController(SaveDishDraftUseCase saveDishDraftUseCase,
                           PublishDishUseCase publishDishUseCase,
                           UnpublishDishUseCase unpublishDishUseCase,
                           UpdateDishStockUseCase updateDishStockUseCase,
                           ApplyPendingChangesUseCase applyPendingChangesUseCase,
-                          ScheduleDishChangesUseCase scheduleDishChangesUseCase) {
+                          ScheduleDishChangesUseCase scheduleDishChangesUseCase,
+                          GetOwnerDishesUseCase getOwnerDishesUseCase) {
         this.saveDishDraftUseCase = saveDishDraftUseCase;
         this.publishDishUseCase = publishDishUseCase;
         this.unpublishDishUseCase = unpublishDishUseCase;
         this.updateDishStockUseCase = updateDishStockUseCase;
         this.applyPendingChangesUseCase = applyPendingChangesUseCase;
         this.scheduleDishChangesUseCase = scheduleDishChangesUseCase;
+        this.getOwnerDishesUseCase = getOwnerDishesUseCase;
+    }
+
+    // Get all dishes (draft + live) for owner dashboard
+    @GetMapping("/restaurant/{restaurantId}")
+    @PreAuthorize("hasAuthority('owner')")
+    public List<DishResponse> getOwnerDishes(@PathVariable UUID restaurantId) {
+        return getOwnerDishesUseCase.getOwnerDishes(restaurantId).stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     // US3: Edit dish as draft
