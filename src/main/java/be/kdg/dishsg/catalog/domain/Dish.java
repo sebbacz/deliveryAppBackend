@@ -1,89 +1,75 @@
 package be.kdg.dishsg.catalog.domain;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 public class Dish {
 
-    public enum DishState { DRAFT, LIVE }
+    public enum DishState { DRAFT, LIVE, LIVE_WITH_PENDING }
 
     private final UUID id;
     private final UUID restaurantId;
-    private String name;
-    private DishType type;
-    private List<String> foodTags;
-    private String description;
-    private double price;
-    private String pictureUrl;
     private boolean inStock;
-    private DishState state;
     private LocalDateTime scheduledAt;
+    private DishData live;
+    private DishData draft;
 
-    public Dish(UUID id, UUID restaurantId, String name, DishType type, List<String> foodTags,
-                String description, double price, String pictureUrl, boolean inStock, DishState state) {
+    public Dish(UUID id, UUID restaurantId, DishData live, DishData draft, boolean inStock, LocalDateTime scheduledAt) {
         if (restaurantId == null) throw new IllegalArgumentException("Restaurant ID required");
+        if (live == null && draft == null) throw new IllegalArgumentException("Dish must have at least live or draft data");
         this.id = id;
         this.restaurantId = restaurantId;
-        this.name = name;
-        this.type = type;
-        this.foodTags = foodTags;
-        this.description = description;
-        this.price = price;
-        this.pictureUrl = pictureUrl;
+        this.live = live;
+        this.draft = draft;
         this.inStock = inStock;
-        this.state = state;
-    }
-
-    public Dish(UUID id, UUID restaurantId, String name, DishType type, List<String> foodTags,
-                String description, double price, String pictureUrl, boolean inStock, DishState state,
-                LocalDateTime scheduledAt) {
-        this(id, restaurantId, name, type, foodTags, description, price, pictureUrl, inStock, state);
         this.scheduledAt = scheduledAt;
     }
 
-    public void updateDraft(String name, DishType type, List<String> foodTags,
-                            String description, double price, String pictureUrl) {
-        if (state != DishState.DRAFT) throw new IllegalStateException("Only draft dishes can be edited");
-        this.name = name;
-        this.type = type;
-        this.foodTags = foodTags;
-        this.description = description;
-        this.price = price;
-        this.pictureUrl = pictureUrl;
+    public void saveDraft(String name, DishType type, java.util.List<String> foodTags,
+                          String description, double price, String pictureUrl) {
+        this.draft = new DishData(name, type, foodTags, description, price, pictureUrl);
     }
 
     public void publish() {
-        if (state == DishState.LIVE) throw new IllegalStateException("Dish is already published");
-        this.state = DishState.LIVE;
+        if (draft == null) throw new IllegalStateException("No draft to publish");
+        this.live = this.draft;
+        this.draft = null;
+        this.scheduledAt = null;
     }
 
     public void unpublish() {
-        if (state == DishState.DRAFT) throw new IllegalStateException("Dish is already a draft");
-        this.state = DishState.DRAFT;
+        if (live == null) throw new IllegalStateException("Dish is not live");
+        if (draft == null) this.draft = this.live;
+        this.live = null;
     }
 
     public void schedulePublishAt(LocalDateTime at) {
-        if (state != DishState.DRAFT) throw new IllegalStateException("Only draft dishes can be scheduled");
+        if (draft == null) throw new IllegalStateException("No draft to schedule");
         this.scheduledAt = at;
     }
 
-    public void clearSchedule() {
-        this.scheduledAt = null;
-    }
+    public void clearSchedule() { this.scheduledAt = null; }
 
     public void markOutOfStock() { this.inStock = false; }
     public void markInStock()    { this.inStock = true; }
 
-    public UUID getId()                   { return id; }
-    public UUID getRestaurantId()         { return restaurantId; }
-    public String getName()               { return name; }
-    public DishType getType()             { return type; }
-    public List<String> getFoodTags()     { return foodTags; }
-    public String getDescription()        { return description; }
-    public double getPrice()              { return price; }
-    public String getPictureUrl()         { return pictureUrl; }
-    public boolean isInStock()            { return inStock; }
-    public DishState getState()           { return state; }
+    public DishState getState() {
+        if (live != null && draft == null)  return DishState.LIVE;
+        if (live == null && draft != null)  return DishState.DRAFT;
+        return DishState.LIVE_WITH_PENDING;
+    }
+
+    public String getEffectiveName()        { return live != null ? live.name()        : draft.name(); }
+    public DishType getEffectiveType()      { return live != null ? live.type()        : draft.type(); }
+    public java.util.List<String> getEffectiveFoodTags() { return live != null ? live.foodTags() : draft.foodTags(); }
+    public String getEffectiveDescription() { return live != null ? live.description() : draft.description(); }
+    public double getEffectivePrice()       { return live != null ? live.price()       : draft.price(); }
+    public String getEffectivePictureUrl()  { return live != null ? live.pictureUrl()  : draft.pictureUrl(); }
+
+    public UUID getId()             { return id; }
+    public UUID getRestaurantId()   { return restaurantId; }
+    public boolean isInStock()      { return inStock; }
     public LocalDateTime getScheduledAt() { return scheduledAt; }
+    public DishData getLive()       { return live; }
+    public DishData getDraft()      { return draft; }
 }

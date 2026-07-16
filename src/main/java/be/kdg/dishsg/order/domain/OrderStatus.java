@@ -1,5 +1,6 @@
 package be.kdg.dishsg.order.domain;
 
+// Lifecycle states an order passes through from placement to final delivery.
 public enum OrderStatus {
     PENDING_DECISION,
     ACCEPTED,

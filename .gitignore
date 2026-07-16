@@ -13,7 +13,7 @@ build/
 application-local.properties
 application-local.yml
 
-# Docker data volumes (never commit these)
+# Docker data volumes
 idp_mysql_data/
 rabbitmq/
 postgres_data/

@@ -2,6 +2,7 @@ package be.kdg.dishsg.order.domain;
 
 import java.util.UUID;
 
+// Value object representing one dish line item within an order.
 public class OrderItem {
     private final UUID id;
     private final UUID dishId;

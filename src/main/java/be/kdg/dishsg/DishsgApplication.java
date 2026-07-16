@@ -10,6 +10,7 @@ import org.springframework.modulith.Modulith;
 import org.springframework.modulith.core.ApplicationModules;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+// Entry point for the Spring Modulith application; logs discovered module structure on startup.
 @Modulith
 @EnableScheduling
 public class DishsgApplication {

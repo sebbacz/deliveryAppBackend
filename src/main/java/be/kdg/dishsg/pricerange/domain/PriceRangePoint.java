@@ -1,5 +1,6 @@
 package be.kdg.dishsg.pricerange.domain;
 
+// Value object representing a restaurant's price range classification for a specific month.
 public class PriceRangePoint {
     public final String month;
     public final PriceRange priceRange;

@@ -1,5 +1,6 @@
 package be.kdg.dishsg.restaurant.domain.model;
 
+// Value object representing a physical street address used by a restaurant.
 public class Address {
 
     private String street;

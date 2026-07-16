@@ -34,6 +34,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	testRuntimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.security:spring-security-test")
+	implementation("com.stripe:stripe-java:25.3.0")
 }
 
 tasks.withType<Test> {

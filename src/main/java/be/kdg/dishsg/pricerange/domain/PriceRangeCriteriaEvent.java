@@ -3,6 +3,7 @@ package be.kdg.dishsg.pricerange.domain;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+// Domain object recording a change in price range classification thresholds, effective from a given date.
 public class PriceRangeCriteriaEvent {
 
     private final UUID id;

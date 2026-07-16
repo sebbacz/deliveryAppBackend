@@ -1,6 +1,6 @@
 package be.kdg.dishsg.security.config;
 
-import be.kdg.dishsg.security.infra.auth.OwnerSessionAuthenticationFilter;
+import be.kdg.dishsg.security.adapters.out.auth.OwnerSessionAuthenticationFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+// Spring Security configuration: public vs. authenticated filter chains, CORS, session-token filter, and JWT setup.
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)

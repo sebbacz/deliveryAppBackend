@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+// Extracts Keycloak realm_access roles from a JWT and maps them to Spring Security GrantedAuthorities.
 public class KeycloakRealmRoleConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
     @Override
     @SuppressWarnings("unchecked")

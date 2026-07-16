@@ -1,5 +1,6 @@
 package be.kdg.dishsg.restaurant.domain.model;
 
+// Domain model for a restaurant, including open/close state, manual override flag, and geo-coordinates.
 public class Restaurant {
 
     private String id;
@@ -12,6 +13,7 @@ public class Restaurant {
     private String typeOfCuisine;
     private String openingHours;
     private boolean isOpen;
+    private boolean manualOverride;
     private Double latitude;
     private Double longitude;
 
@@ -39,6 +41,11 @@ public class Restaurant {
         this(id, ownerId, name, address, contactEmail, pictureUrl, defaultPreparationTime, typeOfCuisine, openingHours, isOpen);
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public Restaurant(String id, String ownerId, String name, Address address, String contactEmail, String pictureUrl, int defaultPreparationTime, String typeOfCuisine, String openingHours, boolean isOpen, boolean manualOverride, Double latitude, Double longitude) {
+        this(id, ownerId, name, address, contactEmail, pictureUrl, defaultPreparationTime, typeOfCuisine, openingHours, isOpen, latitude, longitude);
+        this.manualOverride = manualOverride;
     }
 
 
@@ -84,10 +91,20 @@ public class Restaurant {
 
     public void open() {
         this.isOpen = true;
+        this.manualOverride = true;
     }
 
     public void close() {
         this.isOpen = false;
+        this.manualOverride = true;
+    }
+
+    public void clearManualOverride() {
+        this.manualOverride = false;
+    }
+
+    public boolean isManualOverride() {
+        return manualOverride;
     }
 
     public Double getLatitude() {
