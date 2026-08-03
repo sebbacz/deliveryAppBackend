@@ -2,6 +2,7 @@ package be.kdg.dishsg.restaurant.core;
 
 import be.kdg.dishsg.restaurant.domain.model.Address;
 import be.kdg.dishsg.restaurant.domain.model.Restaurant;
+import be.kdg.dishsg.restaurant.ports.in.CreateRestaurantCmd;
 import be.kdg.dishsg.restaurant.ports.in.CreateRestaurantUseCase;
 import be.kdg.dishsg.restaurant.ports.out.GeocodingPort;
 import be.kdg.dishsg.restaurant.ports.out.RestaurantRepositoryPort;
@@ -21,26 +22,25 @@ public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
     }
 
     @Override
-    public Restaurant createRestaurant(Restaurant restaurant) {
-        if (!restaurantRepository.findByOwnerId(restaurant.getOwnerId()).isEmpty()) {
+    public Restaurant createRestaurant(CreateRestaurantCmd cmd) {
+        if (!restaurantRepository.findByOwnerId(cmd.ownerId()).isEmpty()) {
             throw new IllegalStateException("Owner already has a restaurant");
         }
 
-        Address addr = restaurant.getAddress();
-        String fullAddress = addr.getStreet() + " " + addr.getNumber() + ", " +
-                addr.getPostalCode() + " " + addr.getCity() + ", " + addr.getCountry();
+        String fullAddress = cmd.street() + " " + cmd.number() + ", " +
+                cmd.postalCode() + " " + cmd.city() + ", " + cmd.country();
         Double[] coords = geocodingPort.geocode(fullAddress);
 
         Restaurant toSave = new Restaurant(
                 UUID.randomUUID().toString(),
-                restaurant.getOwnerId(),
-                restaurant.getName(),
-                restaurant.getAddress(),
-                restaurant.getContactEmail(),
-                restaurant.getPictureUrl(),
-                restaurant.getDefaultPreparationTime(),
-                restaurant.getTypeOfCuisine(),
-                restaurant.getOpeningHours(),
+                cmd.ownerId(),
+                cmd.name(),
+                new Address(cmd.street(), cmd.number(), cmd.postalCode(), cmd.city(), cmd.country()),
+                cmd.contactEmail(),
+                cmd.pictureUrls(),
+                cmd.defaultPreparationTime(),
+                cmd.typeOfCuisine(),
+                cmd.openingHours(),
                 true,
                 coords != null ? coords[0] : null,
                 coords != null ? coords[1] : null

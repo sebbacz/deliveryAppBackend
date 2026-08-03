@@ -1,6 +1,8 @@
 package be.kdg.dishsg.restaurant.adapters.in.webAdapters.requests;
 
-// Request body for creating a new restaurant, including address and opening hours.
+import java.util.ArrayList;
+import java.util.List;
+
 public class CreateRestaurantRequest {
 
     public String name;
@@ -10,7 +12,7 @@ public class CreateRestaurantRequest {
     public String city;
     public String country;
     public String contactEmail;
-    public String pictureUrl;
+    public List<String> pictureUrls = new ArrayList<>();
     public int defaultPreparationTime;
     public String typeOfCuisine;
     public String openingHours;

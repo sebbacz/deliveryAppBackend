@@ -1,6 +1,8 @@
 package be.kdg.dishsg.restaurant.adapters.in.dto;
 
-// Response DTO for a restaurant including address, opening hours, geo-coordinates, and open status.
+import java.util.ArrayList;
+import java.util.List;
+
 public class RestaurantResponse {
     public String id;
     public String name;
@@ -10,7 +12,7 @@ public class RestaurantResponse {
     public String city;
     public String country;
     public String contactEmail;
-    public String pictureUrl;
+    public List<String> pictureUrls = new ArrayList<>();
     public int defaultPreparationTime;
     public String typeOfCuisine;
     public String openingHours;

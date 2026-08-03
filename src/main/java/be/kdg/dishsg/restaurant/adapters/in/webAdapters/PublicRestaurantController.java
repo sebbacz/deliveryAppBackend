@@ -49,7 +49,7 @@ public class PublicRestaurantController {
         dto.city = r.getAddress().getCity();
         dto.country = r.getAddress().getCountry();
         dto.contactEmail = r.getContactEmail();
-        dto.pictureUrl = r.getPictureUrl();
+        dto.pictureUrls = r.getPictureUrls();
         dto.defaultPreparationTime = r.getDefaultPreparationTime();
         dto.typeOfCuisine = r.getTypeOfCuisine();
         dto.openingHours = r.getOpeningHours();

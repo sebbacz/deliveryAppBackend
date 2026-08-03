@@ -2,8 +2,8 @@ package be.kdg.dishsg.restaurant.adapters.in.webAdapters;
 
 import be.kdg.dishsg.restaurant.adapters.in.dto.RestaurantResponse;
 import be.kdg.dishsg.restaurant.adapters.in.webAdapters.requests.CreateRestaurantRequest;
-import be.kdg.dishsg.restaurant.domain.model.Address;
 import be.kdg.dishsg.restaurant.domain.model.Restaurant;
+import be.kdg.dishsg.restaurant.ports.in.CreateRestaurantCmd;
 import be.kdg.dishsg.restaurant.ports.in.CreateRestaurantUseCase;
 import be.kdg.dishsg.restaurant.ports.in.DeleteRestaurantUseCase;
 import be.kdg.dishsg.restaurant.ports.in.GetMyRestaurantUseCase;
@@ -17,7 +17,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-// Authenticated REST controller for owners to create, view, open/close, or delete their restaurant.
 @RestController
 @RequestMapping("/api/restaurants")
 public class RestaurantController {
@@ -43,19 +42,22 @@ public class RestaurantController {
     public RestaurantResponse createRestaurant(@RequestBody CreateRestaurantRequest request,
                                                Authentication authentication) {
         String ownerId = extractOwnerId(authentication);
-        Restaurant restaurant = new Restaurant(
-                null,
+        CreateRestaurantCmd cmd = new CreateRestaurantCmd(
                 ownerId,
                 request.name,
-                new Address(request.street, request.number, request.postalCode, request.city, request.country),
+                request.street,
+                request.number,
+                request.postalCode,
+                request.city,
+                request.country,
                 request.contactEmail,
-                request.pictureUrl,
+                request.pictureUrls,
                 request.defaultPreparationTime,
                 request.typeOfCuisine,
                 request.openingHours
         );
         try {
-            return toResponse(createRestaurantUseCase.createRestaurant(restaurant));
+            return toResponse(createRestaurantUseCase.createRestaurant(cmd));
         } catch (IllegalStateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
@@ -111,7 +113,7 @@ public class RestaurantController {
         dto.city = r.getAddress().getCity();
         dto.country = r.getAddress().getCountry();
         dto.contactEmail = r.getContactEmail();
-        dto.pictureUrl = r.getPictureUrl();
+        dto.pictureUrls = r.getPictureUrls();
         dto.defaultPreparationTime = r.getDefaultPreparationTime();
         dto.typeOfCuisine = r.getTypeOfCuisine();
         dto.openingHours = r.getOpeningHours();

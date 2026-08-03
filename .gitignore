@@ -24,7 +24,7 @@ mysql_data/
 *.iml
 *.iws
 *.ipr
-out/
+/out/
 
 # Eclipse
 .classpath

@@ -53,40 +53,37 @@ public class Order {
 
     // ── Constructors ──────────────────────────────────────────────────────────
 
-    /** Used in controllers as a lightweight command carrier (no events raised). */
-    public Order(UUID id, UUID restaurantId, String customerName,
-                 String deliveryStreet, String deliveryNumber, String deliveryPostalCode,
-                 String deliveryCity, String deliveryCountry, String contactEmail,
-                 List<OrderItem> items, LocalDateTime createdAt, OrderStatus status,
-                 String rejectionReason) {
-        this.id = id;
-        this.restaurantId = restaurantId;
-        this.customerName = customerName;
-        this.deliveryStreet = deliveryStreet;
-        this.deliveryNumber = deliveryNumber;
-        this.deliveryPostalCode = deliveryPostalCode;
-        this.deliveryCity = deliveryCity;
-        this.deliveryCountry = deliveryCountry;
-        this.contactEmail = contactEmail;
-        this.items = items;
-        this.createdAt = createdAt;
-        this.status = status;
-        this.rejectionReason = rejectionReason;
-    }
-
-    public Order(UUID id, UUID restaurantId, String customerName,
-                 String deliveryStreet, String deliveryNumber, String deliveryPostalCode,
-                 String deliveryCity, String deliveryCountry, String contactEmail,
-                 List<OrderItem> items, LocalDateTime createdAt, OrderStatus status,
-                 String rejectionReason, Double courierLatitude, Double courierLongitude) {
-        this(id, restaurantId, customerName, deliveryStreet, deliveryNumber, deliveryPostalCode,
-                deliveryCity, deliveryCountry, contactEmail, items, createdAt, status, rejectionReason);
-        this.courierLatitude = courierLatitude;
-        this.courierLongitude = courierLongitude;
-    }
-
-    /** Private constructor used only by the event-sourcing factory methods. */
+    /** Private no-arg constructor — all callers must go through a factory method. */
     private Order() {}
+
+    /**
+     * Reconstruct a read-only Order view from the JPA projection table.
+     * These instances must not have commands issued on them; use
+     * {@link #reconstitute(List)} or {@link #fromSnapshot} for write-path loads.
+     */
+    public static Order fromProjection(UUID id, UUID restaurantId, String customerName,
+                                       String deliveryStreet, String deliveryNumber, String deliveryPostalCode,
+                                       String deliveryCity, String deliveryCountry, String contactEmail,
+                                       List<OrderItem> items, LocalDateTime createdAt, OrderStatus status,
+                                       String rejectionReason, Double courierLatitude, Double courierLongitude) {
+        Order o = new Order();
+        o.id = id;
+        o.restaurantId = restaurantId;
+        o.customerName = customerName;
+        o.deliveryStreet = deliveryStreet;
+        o.deliveryNumber = deliveryNumber;
+        o.deliveryPostalCode = deliveryPostalCode;
+        o.deliveryCity = deliveryCity;
+        o.deliveryCountry = deliveryCountry;
+        o.contactEmail = contactEmail;
+        o.items = items;
+        o.createdAt = createdAt;
+        o.status = status;
+        o.rejectionReason = rejectionReason;
+        o.courierLatitude = courierLatitude;
+        o.courierLongitude = courierLongitude;
+        return o;
+    }
 
     // ── Event-sourced factory methods ─────────────────────────────────────────
 

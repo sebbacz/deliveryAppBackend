@@ -1,5 +1,7 @@
 package be.kdg.dishsg.restaurant.ports.in;
 
+import java.util.List;
+
 public record CreateRestaurantCmd(
         String ownerId,
         String name,
@@ -9,7 +11,7 @@ public record CreateRestaurantCmd(
         String city,
         String country,
         String contactEmail,
-        String pictureUrl,
+        List<String> pictureUrls,
         int defaultPreparationTime,
         String typeOfCuisine,
         String openingHours

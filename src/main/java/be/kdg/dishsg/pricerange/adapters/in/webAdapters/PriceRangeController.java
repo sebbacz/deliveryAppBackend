@@ -30,6 +30,16 @@ public class PriceRangeController {
         this.getPriceRangeHistoryUseCase = getPriceRangeHistoryUseCase;
     }
 
+    // Public: return the single currently-effective criteria so customers see accurate price range filters
+    @GetMapping("/unsecured/price-range/criteria/current")
+    public CriteriaEventResponse getCurrentCriteria() {
+        return getCriteriaEventsUseCase.getCriteriaEvents().stream()
+                .filter(e -> !e.getEffectiveAt().isAfter(java.time.LocalDateTime.now()))
+                .reduce((a, b) -> a.getEffectiveAt().isAfter(b.getEffectiveAt()) ? a : b)
+                .map(e -> new CriteriaEventResponse(e.getId(), e.getEffectiveAt(), e.getCheapMax(), e.getRegularMax(), e.getExpensiveMax()))
+                .orElse(null);
+    }
+
     // US26: Get price range history for a restaurant (public)
     @GetMapping("/unsecured/restaurants/{restaurantId}/price-range-history")
     public List<PriceRangePointResponse> getPriceRangeHistory(@PathVariable UUID restaurantId) {
