@@ -1,13 +1,11 @@
 package be.kdg.dishsg.order.core;
 
 import be.kdg.dishsg.order.domain.Order;
+import be.kdg.dishsg.order.domain.exception.OrderNotFoundException;
+import be.kdg.dishsg.order.ports.in.MarkOrderDeliveredCmd;
 import be.kdg.dishsg.order.ports.in.MarkOrderDeliveredUseCase;
 import be.kdg.dishsg.order.ports.out.OrderRepositoryPort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.UUID;
 
 @Service
 public class DefaultMarkOrderDeliveredUseCase implements MarkOrderDeliveredUseCase {
@@ -19,9 +17,9 @@ public class DefaultMarkOrderDeliveredUseCase implements MarkOrderDeliveredUseCa
     }
 
     @Override
-    public void markOrderDelivered(UUID orderId) {
-        Order order = repository.findById(orderId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
+    public void markOrderDelivered(MarkOrderDeliveredCmd cmd) {
+        Order order = repository.findById(cmd.orderId())
+                .orElseThrow(() -> new OrderNotFoundException(cmd.orderId()));
         order.markDelivered();
         repository.save(order);
     }

@@ -1,13 +1,11 @@
 package be.kdg.dishsg.order.core;
 
 import be.kdg.dishsg.order.domain.Order;
+import be.kdg.dishsg.order.domain.exception.OrderNotFoundException;
+import be.kdg.dishsg.order.ports.in.UpdateCourierLocationCmd;
 import be.kdg.dishsg.order.ports.in.UpdateCourierLocationUseCase;
 import be.kdg.dishsg.order.ports.out.OrderRepositoryPort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.UUID;
 
 @Service
 public class DefaultUpdateCourierLocationUseCase implements UpdateCourierLocationUseCase {
@@ -19,10 +17,10 @@ public class DefaultUpdateCourierLocationUseCase implements UpdateCourierLocatio
     }
 
     @Override
-    public void updateCourierLocation(UUID orderId, double latitude, double longitude) {
-        Order order = repository.findById(orderId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
-        order.updateCourierLocation(latitude, longitude);
+    public void updateCourierLocation(UpdateCourierLocationCmd cmd) {
+        Order order = repository.findById(cmd.orderId())
+                .orElseThrow(() -> new OrderNotFoundException(cmd.orderId()));
+        order.updateCourierLocation(cmd.latitude(), cmd.longitude());
         repository.save(order);
     }
 }

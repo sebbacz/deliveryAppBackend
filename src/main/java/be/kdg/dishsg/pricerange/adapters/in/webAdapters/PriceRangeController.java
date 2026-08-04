@@ -3,6 +3,7 @@ package be.kdg.dishsg.pricerange.adapters.in.webAdapters;
 import be.kdg.dishsg.pricerange.adapters.in.dto.CriteriaEventResponse;
 import be.kdg.dishsg.pricerange.adapters.in.dto.PriceRangePointResponse;
 import be.kdg.dishsg.pricerange.adapters.in.webAdapters.requests.AddCriteriaEventRequest;
+import be.kdg.dishsg.pricerange.ports.in.AddCriteriaEventCmd;
 import be.kdg.dishsg.pricerange.ports.in.AddCriteriaEventUseCase;
 import be.kdg.dishsg.pricerange.ports.in.GetCriteriaEventsUseCase;
 import be.kdg.dishsg.pricerange.ports.in.GetPriceRangeHistoryUseCase;
@@ -63,6 +64,6 @@ public class PriceRangeController {
     @PreAuthorize("hasAuthority('owner')")
     public void addCriteriaEvent(@RequestBody AddCriteriaEventRequest request) {
         addCriteriaEventUseCase.addCriteriaEvent(
-                request.effectiveAt, request.cheapMax, request.regularMax, request.expensiveMax);
+                new AddCriteriaEventCmd(request.effectiveAt, request.cheapMax, request.regularMax, request.expensiveMax));
     }
 }

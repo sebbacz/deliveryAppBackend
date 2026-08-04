@@ -5,12 +5,16 @@ import be.kdg.dishsg.order.adapters.in.dto.OrderResponse;
 import be.kdg.dishsg.order.adapters.in.webAdapters.requests.CreateOrderRequest;
 import be.kdg.dishsg.order.adapters.in.webAdapters.requests.RejectOrderRequest;
 import be.kdg.dishsg.order.domain.Order;
+import be.kdg.dishsg.order.ports.in.AcceptOrderCmd;
 import be.kdg.dishsg.order.ports.in.AcceptOrderUseCase;
 import be.kdg.dishsg.order.ports.in.CreateOrderCmd;
 import be.kdg.dishsg.order.ports.in.CreateOrderUseCase;
 import be.kdg.dishsg.order.ports.in.GetOrdersUseCase;
+import be.kdg.dishsg.order.ports.in.MarkOrderDeliveredCmd;
 import be.kdg.dishsg.order.ports.in.MarkOrderDeliveredUseCase;
+import be.kdg.dishsg.order.ports.in.MarkOrderPickedUpCmd;
 import be.kdg.dishsg.order.ports.in.MarkOrderPickedUpUseCase;
+import be.kdg.dishsg.order.ports.in.MarkOrderReadyCmd;
 import be.kdg.dishsg.order.ports.in.MarkOrderReadyUseCase;
 import be.kdg.dishsg.order.ports.in.RejectOrderCmd;
 import be.kdg.dishsg.order.ports.in.RejectOrderUseCase;
@@ -85,7 +89,7 @@ public class OrderController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('owner')")
     public void acceptOrder(@PathVariable UUID id) {
-        acceptOrderUseCase.acceptOrder(id);
+        acceptOrderUseCase.acceptOrder(new AcceptOrderCmd(id));
     }
 
     // US10: Reject an order with reason
@@ -101,7 +105,7 @@ public class OrderController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('owner')")
     public void markOrderReady(@PathVariable UUID id) {
-        markOrderReadyUseCase.markOrderReady(id);
+        markOrderReadyUseCase.markOrderReady(new MarkOrderReadyCmd(id));
     }
 
     // Simulate delivery service: mark order as picked up by courier
@@ -109,7 +113,7 @@ public class OrderController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('owner')")
     public void markOrderPickedUp(@PathVariable UUID id) {
-        markOrderPickedUpUseCase.markOrderPickedUp(id);
+        markOrderPickedUpUseCase.markOrderPickedUp(new MarkOrderPickedUpCmd(id));
     }
 
     // Simulate delivery service: mark order as delivered
@@ -117,7 +121,7 @@ public class OrderController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('owner')")
     public void markOrderDelivered(@PathVariable UUID id) {
-        markOrderDeliveredUseCase.markOrderDelivered(id);
+        markOrderDeliveredUseCase.markOrderDelivered(new MarkOrderDeliveredCmd(id));
     }
 
     private OrderResponse toResponse(Order order) {

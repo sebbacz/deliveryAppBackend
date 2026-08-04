@@ -1,15 +1,14 @@
 package be.kdg.dishsg.order.core;
 
 import be.kdg.dishsg.order.domain.Order;
+import be.kdg.dishsg.order.domain.exception.OrderNotFoundException;
+import be.kdg.dishsg.order.ports.in.AcceptOrderCmd;
 import be.kdg.dishsg.order.ports.in.AcceptOrderUseCase;
 import be.kdg.dishsg.order.ports.out.OrderRepositoryPort;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class DefaultAcceptOrderUseCase implements AcceptOrderUseCase {
@@ -23,9 +22,9 @@ public class DefaultAcceptOrderUseCase implements AcceptOrderUseCase {
     }
 
     @Override
-    public void acceptOrder(UUID orderId) {
-        Order order = repository.findById(orderId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
+    public void acceptOrder(AcceptOrderCmd cmd) {
+        Order order = repository.findById(cmd.orderId())
+                .orElseThrow(() -> new OrderNotFoundException(cmd.orderId()));
         order.accept();
         repository.save(order);
         String routingKey = "restaurant." + order.getRestaurantId() + ".order.accepted.v1";

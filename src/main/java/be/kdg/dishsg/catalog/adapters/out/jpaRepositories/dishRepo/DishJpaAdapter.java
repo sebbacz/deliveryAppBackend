@@ -36,6 +36,7 @@ public class DishJpaAdapter implements DishRepositoryPort {
     @Override
     public List<Dish> findAllByRestaurantId(UUID restaurantId) {
         return springRepo.findByRestaurantId(restaurantId).stream()
+                .filter(e -> e.getLiveName() != null || e.getDraftName() != null)
                 .map(this::toDomain)
                 .collect(Collectors.toList());
     }

@@ -1,5 +1,6 @@
 package be.kdg.dishsg.pricerange.core;
 
+import be.kdg.dishsg.pricerange.ports.in.AddCriteriaEventCmd;
 import be.kdg.dishsg.pricerange.ports.in.AddCriteriaEventUseCase;
 import be.kdg.dishsg.pricerange.ports.out.PriceRangeCriteriaEventRepositoryPort;
 import org.springframework.boot.ApplicationArguments;
@@ -32,6 +33,6 @@ public class PriceRangeCriteriaSeeder implements ApplicationRunner {
         }
         // Seed initial criteria with the spec defaults, starting 12 months ago
         addCriteriaEventUseCase.addCriteriaEvent(
-                LocalDateTime.now().minusMonths(12), 10.0, 30.0, 60.0);
+                new AddCriteriaEventCmd(LocalDateTime.now().minusMonths(12), 10.0, 30.0, 60.0));
     }
 }

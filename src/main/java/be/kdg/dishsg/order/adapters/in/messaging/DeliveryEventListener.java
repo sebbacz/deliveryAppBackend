@@ -1,7 +1,10 @@
 package be.kdg.dishsg.order.adapters.in.messaging;
 
+import be.kdg.dishsg.order.ports.in.MarkOrderDeliveredCmd;
 import be.kdg.dishsg.order.ports.in.MarkOrderDeliveredUseCase;
+import be.kdg.dishsg.order.ports.in.MarkOrderPickedUpCmd;
 import be.kdg.dishsg.order.ports.in.MarkOrderPickedUpUseCase;
+import be.kdg.dishsg.order.ports.in.UpdateCourierLocationCmd;
 import be.kdg.dishsg.order.ports.in.UpdateCourierLocationUseCase;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
@@ -35,7 +38,7 @@ public class DeliveryEventListener {
     ))
     public void handleOrderPickedUp(Map<String, Object> payload) {
         UUID orderId = UUID.fromString(payload.get("orderId").toString());
-        markOrderPickedUpUseCase.markOrderPickedUp(orderId);
+        markOrderPickedUpUseCase.markOrderPickedUp(new MarkOrderPickedUpCmd(orderId));
     }
 
     @RabbitListener(bindings = @QueueBinding(
@@ -45,7 +48,7 @@ public class DeliveryEventListener {
     ))
     public void handleOrderDelivered(Map<String, Object> payload) {
         UUID orderId = UUID.fromString(payload.get("orderId").toString());
-        markOrderDeliveredUseCase.markOrderDelivered(orderId);
+        markOrderDeliveredUseCase.markOrderDelivered(new MarkOrderDeliveredCmd(orderId));
     }
 
     @RabbitListener(bindings = @QueueBinding(
@@ -57,6 +60,6 @@ public class DeliveryEventListener {
         UUID orderId = UUID.fromString(payload.get("orderId").toString());
         double latitude = Double.parseDouble(payload.get("latitude").toString());
         double longitude = Double.parseDouble(payload.get("longitude").toString());
-        updateCourierLocationUseCase.updateCourierLocation(orderId, latitude, longitude);
+        updateCourierLocationUseCase.updateCourierLocation(new UpdateCourierLocationCmd(orderId, latitude, longitude));
     }
 }
