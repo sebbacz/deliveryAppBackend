@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
+// Declares the shared topic exchange and JSON message converter used by all RabbitMQ producers
 @Configuration
 public class RabbitMQConfig {
 
