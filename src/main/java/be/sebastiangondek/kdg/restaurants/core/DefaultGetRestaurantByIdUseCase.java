@@ -6,8 +6,10 @@ import be.sebastiangondek.kdg.restaurants.ports.out.RestaurantRepositoryPort;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 // Used by both the customer detail page
+@Transactional(readOnly = true)
 @Service
 public class DefaultGetRestaurantByIdUseCase implements GetRestaurantByIdUseCase {
 

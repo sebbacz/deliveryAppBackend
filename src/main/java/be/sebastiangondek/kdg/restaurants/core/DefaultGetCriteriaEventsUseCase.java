@@ -6,8 +6,10 @@ import be.sebastiangondek.kdg.restaurants.ports.out.PriceRangeCriteriaEventRepos
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 // Returns all criteria ordered by effectiveAt.
+@Transactional(readOnly = true)
 @Service
 public class DefaultGetCriteriaEventsUseCase implements GetCriteriaEventsUseCase {
 

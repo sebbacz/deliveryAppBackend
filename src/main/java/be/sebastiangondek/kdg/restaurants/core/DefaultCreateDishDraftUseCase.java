@@ -8,8 +8,10 @@ import be.sebastiangondek.kdg.restaurants.ports.out.SaveDishPort;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 // Creates a new dish in DRAFT stat.
+@Transactional
 @Service
 public class DefaultCreateDishDraftUseCase implements CreateDishDraftUseCase {
 

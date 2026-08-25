@@ -9,8 +9,10 @@ import be.sebastiangondek.kdg.restaurants.ports.out.RestaurantRepositoryPort;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 // One owner → one restaurant rule enforced.
+@Transactional
 @Service
 public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
 

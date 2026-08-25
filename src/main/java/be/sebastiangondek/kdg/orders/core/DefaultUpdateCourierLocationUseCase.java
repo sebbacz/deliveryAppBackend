@@ -6,8 +6,10 @@ import be.sebastiangondek.kdg.orders.ports.in.UpdateCourierLocationCmd;
 import be.sebastiangondek.kdg.orders.ports.in.UpdateCourierLocationUseCase;
 import be.sebastiangondek.kdg.orders.ports.out.OrderRepositoryPort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 // Platest GPS coordinates of ledlivery guy;
+@Transactional
 @Service
 public class DefaultUpdateCourierLocationUseCase implements UpdateCourierLocationUseCase {
 

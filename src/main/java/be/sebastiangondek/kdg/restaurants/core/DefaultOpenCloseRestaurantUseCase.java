@@ -5,8 +5,10 @@ import be.sebastiangondek.kdg.restaurants.domain.exception.RestaurantNotFoundExc
 import be.sebastiangondek.kdg.restaurants.ports.in.OpenCloseRestaurantUseCase;
 import be.sebastiangondek.kdg.restaurants.ports.out.RestaurantRepositoryPort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 // Service for manually opening or closing a restaurant.
+@Transactional
 @Service
 public class DefaultOpenCloseRestaurantUseCase implements OpenCloseRestaurantUseCase {
 

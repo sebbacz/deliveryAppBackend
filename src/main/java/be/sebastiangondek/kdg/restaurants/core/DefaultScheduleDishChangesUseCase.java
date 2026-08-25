@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 // timestamp on pending drafts and  a 30-second scheduler
+@Transactional
 @Service
 public class DefaultScheduleDishChangesUseCase implements ScheduleDishChangesUseCase {
 

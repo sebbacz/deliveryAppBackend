@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 // Returns all orders for a restaurant from the CQRS projection table,
+@Transactional(readOnly = true)
 @Service
 public class DefaultGetOrdersUseCase implements GetOrdersUseCase {
 

@@ -6,8 +6,10 @@ import be.sebastiangondek.kdg.orders.ports.in.RejectOrderCmd;
 import be.sebastiangondek.kdg.orders.ports.in.RejectOrderUseCase;
 import be.sebastiangondek.kdg.orders.ports.out.OrderRepositoryPort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 // Rejects an order with a mandatory reason; the reason is stored in the event log and shown on the tracking page.
+@Transactional
 @Service
 public class DefaultRejectOrderUseCase implements RejectOrderUseCase {
 

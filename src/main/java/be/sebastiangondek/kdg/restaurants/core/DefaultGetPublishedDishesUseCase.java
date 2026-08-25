@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 // Returns only LIVE dishes; used by the customer-facing menu and checkout stock validation.
+@Transactional(readOnly = true)
 @Service
 public class DefaultGetPublishedDishesUseCase implements GetPublishedDishesUseCase {
 

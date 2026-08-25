@@ -9,8 +9,10 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import org.springframework.transaction.annotation.Transactional;
 
 // Marks order ready and publishes RabbitMQ event so the delivery service knows to dispatch a courier.
+@Transactional
 @Service
 public class DefaultMarkOrderReadyUseCase implements MarkOrderReadyUseCase {
 

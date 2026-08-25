@@ -7,8 +7,10 @@ import be.sebastiangondek.kdg.restaurants.ports.out.SaveDishPort;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 // Allows an owner to toggle availability without removing a dish; out-of-stock dishes are blocked at checkout.
+@Transactional
 @Service
 public class DefaultSetDishStockStatusUseCase implements UpdateDishStockUseCase {
 

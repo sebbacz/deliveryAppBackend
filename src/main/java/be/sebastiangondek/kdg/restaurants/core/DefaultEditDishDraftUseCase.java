@@ -6,8 +6,10 @@ import be.sebastiangondek.kdg.restaurants.ports.in.UpdateDishDraftCmd;
 import be.sebastiangondek.kdg.restaurants.ports.out.LoadDishPort;
 import be.sebastiangondek.kdg.restaurants.ports.out.SaveDishPort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 // Overwrites the draft data on an existing dish.
+@Transactional
 @Service
 public class DefaultEditDishDraftUseCase implements EditDishDraftUseCase {
 

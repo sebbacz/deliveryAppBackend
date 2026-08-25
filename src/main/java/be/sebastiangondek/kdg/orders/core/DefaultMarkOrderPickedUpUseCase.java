@@ -6,8 +6,10 @@ import be.sebastiangondek.kdg.orders.ports.in.MarkOrderPickedUpCmd;
 import be.sebastiangondek.kdg.orders.ports.in.MarkOrderPickedUpUseCase;
 import be.sebastiangondek.kdg.orders.ports.out.OrderRepositoryPort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 // Called by the delivery service via RabbitMQ when the courier collects the order from the restaurant.
+@Transactional
 @Service
 public class DefaultMarkOrderPickedUpUseCase implements MarkOrderPickedUpUseCase {
 

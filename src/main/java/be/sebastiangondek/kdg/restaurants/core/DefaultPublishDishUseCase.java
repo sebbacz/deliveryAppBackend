@@ -7,8 +7,10 @@ import be.sebastiangondek.kdg.restaurants.ports.out.SaveDishPort;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 // Publishes a single dish draft; enforces the 10 live cap only for new dishes (not updates to existing live ones).
+@Transactional
 @Service
 public class DefaultPublishDishUseCase implements PublishDishUseCase {
 

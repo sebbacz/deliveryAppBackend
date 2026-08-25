@@ -1,6 +1,6 @@
 package be.sebastiangondek.kdg.orders.adapters.in.webAdapters;
 
-import be.sebastiangondek.kdg.orders.core.DefaultCreatePaymentIntentUseCase;
+import be.sebastiangondek.kdg.orders.ports.in.CreatePaymentIntentUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,9 +14,9 @@ import java.util.Map;
 @RequestMapping("/unsecured/payments")
 public class PaymentController {
 
-    private final DefaultCreatePaymentIntentUseCase createPaymentIntentUseCase;
+    private final CreatePaymentIntentUseCase createPaymentIntentUseCase;
 
-    public PaymentController(DefaultCreatePaymentIntentUseCase createPaymentIntentUseCase) {
+    public PaymentController(CreatePaymentIntentUseCase createPaymentIntentUseCase) {
         this.createPaymentIntentUseCase = createPaymentIntentUseCase;
     }
 

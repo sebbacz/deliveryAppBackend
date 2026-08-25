@@ -4,12 +4,13 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
+import be.sebastiangondek.kdg.orders.ports.in.CreatePaymentIntentUseCase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 // Creates a Stripe PaymentIntent so the frontend can render the Stripe Elements card form.
 @Service
-public class DefaultCreatePaymentIntentUseCase {
+public class DefaultCreatePaymentIntentUseCase implements CreatePaymentIntentUseCase {
 
     public DefaultCreatePaymentIntentUseCase(@Value("${stripe.secret-key}") String secretKey) {
         Stripe.apiKey = secretKey;

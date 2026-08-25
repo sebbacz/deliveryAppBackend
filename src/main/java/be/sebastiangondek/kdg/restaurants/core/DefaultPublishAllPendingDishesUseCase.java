@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 // Publishes all pending drafts at once; enforces the 10 live dish cap .
+@Transactional
 @Service
 public class DefaultPublishAllPendingDishesUseCase implements ApplyPendingChangesUseCase {
 

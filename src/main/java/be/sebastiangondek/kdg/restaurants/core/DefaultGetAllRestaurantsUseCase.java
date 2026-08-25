@@ -6,8 +6,10 @@ import be.sebastiangondek.kdg.restaurants.ports.out.RestaurantRepositoryPort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 // Returns all restaurants; used by the landing page.
+@Transactional(readOnly = true)
 @Service
 public class DefaultGetAllRestaurantsUseCase implements GetAllRestaurantsUseCase {
 

@@ -9,8 +9,10 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import org.springframework.transaction.annotation.Transactional;
 
 // Accepts an order and publishes a RabbitMQ event so the delivery service can prepare for pickup.
+@Transactional
 @Service
 public class DefaultAcceptOrderUseCase implements AcceptOrderUseCase {
 

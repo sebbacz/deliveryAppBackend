@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
 import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 // Service computing the monthly price range history for a restaurant using event-sourced criteria.
+@Transactional(readOnly = true)
 @Service
 public class DefaultGetPriceRangeHistoryUseCase implements GetPriceRangeHistoryUseCase {
 

@@ -13,8 +13,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.transaction.annotation.Transactional;
 
-// Validates restaurant is open before placing; ->>RestaurantClosedException
+// Validates restaurant is open before placing;
+@Transactional
 @Service
 public class DefaultCreateOrderUseCase implements CreateOrderUseCase {
 

@@ -59,6 +59,8 @@ public class Restaurant {
     public void close() { this.isOpen = false; this.manualOverride = true; }
     public void clearManualOverride() { this.manualOverride = false; }
 
-    public void setLatitude(Double latitude)   { this.latitude = latitude; }
-    public void setLongitude(Double longitude) { this.longitude = longitude; }
+    public void updateCoordinates(Double latitude, Double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }

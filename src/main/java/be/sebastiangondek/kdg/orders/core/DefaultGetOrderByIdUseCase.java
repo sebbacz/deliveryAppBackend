@@ -7,8 +7,10 @@ import be.sebastiangondek.kdg.orders.ports.out.OrderRepositoryPort;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 //  used by the public tracking page (no auth).
+@Transactional(readOnly = true)
 @Service
 public class DefaultGetOrderByIdUseCase implements GetOrderByIdUseCase {
 

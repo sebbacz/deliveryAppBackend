@@ -7,8 +7,10 @@ import be.sebastiangondek.kdg.restaurants.ports.out.SaveDishPort;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 // Removes a dish from the live menu; copies live to draft so the data is nto lost
+@Transactional
 @Service
 public class DefaultUnpublishDishUseCase implements UnpublishDishUseCase {
 

@@ -6,8 +6,10 @@ import be.sebastiangondek.kdg.orders.ports.in.MarkOrderDeliveredCmd;
 import be.sebastiangondek.kdg.orders.ports.in.MarkOrderDeliveredUseCase;
 import be.sebastiangondek.kdg.orders.ports.out.OrderRepositoryPort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 // once DELIVERED ->>polling on the tracking page stops.
+@Transactional
 @Service
 public class DefaultMarkOrderDeliveredUseCase implements MarkOrderDeliveredUseCase {
 

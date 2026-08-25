@@ -5,8 +5,10 @@ import be.sebastiangondek.kdg.orders.ports.out.OrderRepositoryPort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import org.springframework.transaction.annotation.Transactional;
 
 // Auto-rejects orders that go undecided for more than 5 minutes; run every 30 s by AutoDeclineOrdersScheduler.
+@Transactional
 @Service
 public class DefaultAutoDeclineOrdersUseCase implements AutoDeclineOrdersUseCase {
 
